@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dominik Toth — Mechanical Engineering</title>
+<meta name="description" content="Dominik Toth is a mechanical engineering undergraduate at UNLV focused on flight hardware, recovery systems, and design for manufacturability.">
+<style>
+  /* ============================================================
+     TOKENS
+     ============================================================ */
+  :root {
+    --bg:        #000000;
+    --bg-raised: #0d0d0d;
+    --rule:      #262626;
+    --rule-soft: #171717;
+    --text:      #f2f2f2;
+    --text-2:    #9a9a9a;
+    --text-3:    #5c5c5c;
+
+    --font: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+
+    --gutter: clamp(20px, 5vw, 72px);
+    --max:    1440px;
+    --nav-h:  64px;
+  }
+
+  /* ============================================================
+     BASE
+     ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  img, video { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible { outline: 1px solid var(--text); outline-offset: 4px; }
+  ul, ol { list-style: none; }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+  }
+
+  .meta {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    font-weight: 500;
+  }
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  .nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: var(--nav-h);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .nav.is-scrolled {
+    background: rgba(0,0,0,0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--rule-soft);
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-weight: 700; letter-spacing: -0.02em; font-size: 15px; }
+  .brand span { color: var(--text-3); font-weight: 400; margin-left: 10px; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { font-size: 13px; color: var(--text-2); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-toggle { display: none; background: none; border: 0; color: var(--text); font: inherit; font-size: 13px; cursor: pointer; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero {
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding-top: var(--nav-h);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+    background-size: 96px 96px;
+    mask-image: radial-gradient(ellipse at 70% 40%, #000 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: 12vh;
+    padding-bottom: 56px;
+    position: relative;
+  }
+  .hero .meta { margin-bottom: 28px; }
+  .hero h1 {
+    font-size: clamp(42px, 8vw, 132px);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    font-weight: 700;
+    max-width: 15ch;
+  }
+  .hero-sub {
+    margin-top: 32px;
+    max-width: 50ch;
+    font-size: clamp(16px, 1.3vw, 20px);
+    line-height: 1.45;
+    color: var(--text-2);
+  }
+
+  .spec {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    position: relative;
+  }
+  .spec div { padding: 22px 24px 24px 0; border-right: 1px solid var(--rule); margin-right: 24px; }
+  .spec div:last-child { border-right: 0; margin-right: 0; }
+  .spec dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); font-weight: 500; }
+  .spec dd { margin-top: 10px; font-size: 15px; font-weight: 500; }
+
+  .reveal { opacity: 0; transform: translateY(14px); animation: rise 0.9s cubic-bezier(.2,.7,.2,1) forwards; }
+  .reveal:nth-child(2) { animation-delay: 0.1s; }
+  .reveal:nth-child(3) { animation-delay: 0.2s; }
+  .spec.reveal { animation-delay: 0.32s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* ============================================================
+     SECTIONS
+     ============================================================ */
+  .section { border-top: 1px solid var(--rule); padding: 96px 0; }
+  .section-head { display: grid; grid-template-columns: 200px 1fr; gap: 40px; margin-bottom: 64px; }
+  .section-head h2 { font-size: clamp(28px, 3.2vw, 44px); letter-spacing: -0.03em; line-height: 1.05; font-weight: 700; }
+  .section-head p { margin-top: 18px; max-width: 58ch; color: var(--text-2); font-size: 17px; }
+
+  /* --- About --- */
+  .about-grid { display: grid; grid-template-columns: 200px 1fr 1fr; gap: 40px; }
+  .about-grid p { font-size: 18px; line-height: 1.55; max-width: 52ch; }
+  .about-grid p + p { margin-top: 20px; }
+  .about-list li {
+    display: flex; justify-content: space-between; gap: 24px;
+    padding: 14px 0; border-bottom: 1px solid var(--rule-soft); font-size: 15px;
+  }
+  .about-list li:first-child { border-top: 1px solid var(--rule-soft); }
+  .about-list li span:last-child { color: var(--text-2); text-align: right; }
+  .about-list a { text-decoration: underline; text-underline-offset: 3px; }
+  .about-list a:hover { color: var(--text); }
+
+  /* --- Projects --- */
+  .project {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    gap: 40px;
+    padding: 56px 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .project:last-child { border-bottom: 1px solid var(--rule-soft); }
+  .project-media figure {
+    background: var(--bg-raised);
+    border: 1px solid var(--rule-soft);
+    overflow: hidden;
+  }
+  .project-media figure.main { aspect-ratio: 4 / 3; }
+  .project-media img { width: 100%; height: 100%; object-fit: cover; }
+  .project-media figcaption { font-size: 11px; color: var(--text-3); padding: 8px 0 0; letter-spacing: 0.02em; }
+  .thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .thumbs figure { aspect-ratio: 4 / 3; }
+  .thumbs figure.light img { background: #fff; object-fit: contain; }
+  .project h3 { font-size: clamp(22px, 2vw, 28px); letter-spacing: -0.025em; line-height: 1.1; font-weight: 700; }
+  .project-body > p { margin-top: 18px; color: var(--text-2); max-width: 50ch; }
+  .project-specs { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  .project-specs div { padding: 12px 0; border-top: 1px solid var(--rule-soft); }
+  .project-specs dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
+  .project-specs dd { margin-top: 6px; font-size: 14px; }
+  .project-link {
+    display: inline-block; margin-top: 28px; font-size: 13px;
+    border-bottom: 1px solid var(--text-3); padding-bottom: 2px; transition: border-color 0.2s;
+  }
+  .project-link:hover { border-color: var(--text); }
+  .project .meta .sub { display: block; margin-top: 6px; color: var(--text-3); text-transform: none; letter-spacing: 0; font-size: 12px; }
+
+  /* --- Experience --- */
+  .timeline li {
+    display: grid; grid-template-columns: 200px 1fr 1fr; gap: 40px;
+    padding: 36px 0; border-top: 1px solid var(--rule-soft);
+  }
+  .timeline li:last-child { border-bottom: 1px solid var(--rule-soft); }
+  .timeline .idx { display: flex; flex-direction: column; gap: 6px; }
+  .timeline .idx b { font-weight: 500; font-size: 13px; color: var(--text); }
+  .timeline h3 { font-size: 20px; letter-spacing: -0.02em; font-weight: 700; line-height: 1.2; }
+  .timeline .role { margin-top: 6px; color: var(--text-2); font-size: 15px; }
+  .timeline .loc { margin-top: 4px; color: var(--text-3); font-size: 13px; }
+  .timeline .detail { color: var(--text-2); font-size: 15px; }
+  .timeline .detail li { display: block; padding: 0 0 0 16px; border: 0; margin-bottom: 10px; position: relative; }
+  .timeline .detail li::before { content: "—"; position: absolute; left: 0; color: var(--text-3); }
+  .timeline .exp-img {
+    margin-top: 20px; aspect-ratio: 16 / 9; overflow: hidden;
+    border: 1px solid var(--rule-soft); background: var(--bg-raised);
+  }
+  .timeline .exp-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* --- Capabilities --- */
+  .cap-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+  .cap { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 28px 24px 32px; min-height: 240px; }
+  .cap h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+  .cap ul { margin-top: 18px; }
+  .cap li { font-size: 14px; color: var(--text-2); padding: 4px 0; }
+
+  /* --- Contact --- */
+  .contact { padding: 120px 0 96px; border-top: 1px solid var(--rule); }
+  .contact h2 { font-size: clamp(36px, 6vw, 96px); letter-spacing: -0.04em; line-height: 0.95; font-weight: 700; max-width: 18ch; }
+  .contact-row { margin-top: 56px; display: grid; grid-template-columns: 200px 1fr 1fr; gap: 40px; }
+  .contact-row a { display: block; font-size: 17px; padding: 14px 0; border-bottom: 1px solid var(--rule-soft); transition: color 0.2s; }
+  .contact-row a:hover { color: var(--text-2); }
+  .contact-row a:first-child { border-top: 1px solid var(--rule-soft); }
+
+  footer { border-top: 1px solid var(--rule); padding: 24px 0; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+  @media (max-width: 1024px) {
+    .spec { grid-template-columns: repeat(3, 1fr); }
+    .spec div:nth-child(3) { border-right: 0; }
+    .spec div:nth-child(n+4) { border-top: 1px solid var(--rule); }
+    .cap-grid { grid-template-columns: repeat(2, 1fr); }
+    .section-head, .about-grid, .project, .timeline li, .contact-row { grid-template-columns: 140px 1fr; }
+    .about-grid > *:nth-child(3), .project-body, .timeline .detail, .contact-row > *:nth-child(3) { grid-column: 2; }
+  }
+  @media (max-width: 680px) {
+    :root { --nav-h: 56px; }
+    .nav-links {
+      display: none; position: absolute; top: var(--nav-h); left: 0; right: 0;
+      flex-direction: column; gap: 0; background: #000; border-bottom: 1px solid var(--rule);
+    }
+    .nav-links.is-open { display: flex; }
+    .nav-links a { padding: 16px var(--gutter); border-top: 1px solid var(--rule-soft); font-size: 15px; }
+    .nav-toggle { display: block; }
+    .spec { grid-template-columns: 1fr 1fr; }
+    .spec div { border-right: 0; margin-right: 0; padding-right: 16px; }
+    .spec div:nth-child(odd) { border-right: 1px solid var(--rule); }
+    .spec div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+    .section { padding: 64px 0; }
+    .section-head, .about-grid, .project, .timeline li, .contact-row { grid-template-columns: 1fr; gap: 20px; }
+    .about-grid > *:nth-child(3), .project-body, .timeline .detail, .contact-row > *:nth-child(3) { grid-column: auto; }
+    .section-head { margin-bottom: 40px; }
+    .cap-grid { grid-template-columns: 1fr; }
+    .cap { min-height: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { animation: none; opacity: 1; transform: none; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#top" class="brand">DOMINIK TOTH <span>Mechanical Engineering</span></a>
+    <nav class="nav-links" id="navLinks" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <div class="wrap hero-main">
+      <p class="meta reveal">Dominik Toth — Las Vegas, Nevada</p>
+      <h1 class="reveal">Flight hardware that comes back in one piece.</h1>
+      <p class="hero-sub reveal">
+        Mechanical engineering undergraduate at UNLV. I design, analyze, build, and test recovery
+        systems and electro-mechanical hardware — from CAD and FEA through 3D printing, machining,
+        and flight.
+      </p>
+    </div>
+    <div class="wrap">
+      <dl class="spec reveal">
+        <div><dt>Discipline</dt><dd>B.S. Mechanical Engineering</dd></div>
+        <div><dt>Institution</dt><dd>University of Nevada, Las Vegas</dd></div>
+        <div><dt>Graduation</dt><dd>May 2027</dd></div>
+        <div><dt>Most recent</dt><dd>Anduril Industries, EME Intern</dd></div>
+        <div><dt>Status</dt><dd>Open to Summer 2027 internships</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT
+       ============================================================ -->
+  <section class="section" id="about">
+    <div class="wrap about-grid">
+      <p class="meta">About</p>
+      <div>
+        <p>
+          I'm a third-year mechanical engineering student at UNLV with a strong interest in
+          engineering design and hands-on problem solving. Most of my time outside class goes to
+          SEDS UNLV, where I lead the recovery subsystem for our IREC rocket — designing flight
+          hardware, validating deployment systems, and supporting vehicle integration and testing.
+        </p>
+        <p>
+          I enjoy taking ideas from concept to reality, with an emphasis on 3D CAD, design for
+          manufacturability, and iterative prototyping. I'm drawn to technically demanding projects
+          that require careful design, testing, and execution.
+        </p>
+      </div>
+      <ul class="about-list">
+        <li><span>GPA</span><span>3.74 / 4.00</span></li>
+        <li><span>Expected graduation</span><span>May 2027</span></li>
+        <li><span>Team</span><span>SEDS UNLV — IREC Recovery Lead</span></li>
+        <li><span>Certification</span><span>Tripoli Rocketry Association Level 1</span></li>
+        <li><span>Résumé</span><span><a href="Dominik_Toth_Resume.pdf" target="_blank" rel="noopener">Download PDF</a></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROJECTS
+       ============================================================ -->
+  <section class="section" id="projects">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="meta">Projects</p>
+        <div>
+          <h2>Selected work</h2>
+          <p>Recovery systems for two IREC competition rockets, a Tripoli Level 1 certification vehicle, and a personal design project.</p>
+        </div>
+      </div>
+
+      <!-- Tachyon -->
+      <article class="project">
+        <p class="meta">Jul 2025 — Jun 2026<span class="sub">SEDS UNLV · IREC 2026</span></p>
+        <div class="project-media">
+          <figure class="main">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVcO5oLbqIZnKpXjRnGGb4Pf36Bg6tT7PK68YcCgw1u7UE5EOYaNH0CUAUrWzj73uhOyYZPHFRG8NNiG-uPuPEOUCyhFcYRYb_n0SAPrv4VY62DUJRDRYen4huEQzzyzN96_OLs6L41CSX5_C89Q37_xmvgeI2hncw26ogIStUDoj43iVJpxcO7cEw6B94=w1280" alt="Tachyon avionics sled, assembled with dual altimeters and GPS tracker">
+          </figure>
+          <div class="thumbs">
+            <figure>
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWMQYqvLi0GUusaKSDjJSNKNz7G-49ib1rMe1HByKi_n9Ga25QAY_0mWovpPsrsTcmCao-QFBrYdnfUIdQGYsf3cw0i8CCyYLYE-HOVsmo3R7JWvKFVqtmZkb4Vq3op_U387e8_j7DQxzz47TRnH2hfoNY0bfnmi2Kj0ednKZM0E4QZlPKBDsAzFFzbBhO7CU-E7h0lpayzv-kJOfKZ4FryA4Nw6FdsEtqA5C47qTs=w1280" alt="Tachyon avionics sled CAD model">
+              <figcaption>Avionics sled — SolidWorks</figcaption>
+            </figure>
+            <figure>
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXr3-ZSXN4atgJ6OpReDZxYL1Y8o-rqC5eexJj1NWl9odRZEgKQlK0XR_MUJZHvnNRbnhR08_Rhi9lwVo0Z8IGqgHc3SkLZkhEQurounmSde-uhTNLLjeUyZ13clTEKYenBtTYaDNtffsK6URwTxTSJVmB-vD32y28Z-4kXRe8thKoYlEr9IFf3iPoRQi4shWhfsusUlnuZ2W0GmjmI6YrvzidSHfr37c6yNu46Al8=w1280" alt="ANSYS static structural analysis of the aluminum bulkhead">
+              <figcaption>Bulkhead FEA — ANSYS</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3>Tachyon — recovery subsystem lead</h3>
+          <p>
+            Redundant dual-deploy recovery system for UNLV's IREC 2026 entry, built to the DTEG
+            requirements. Led an 8+ member team through design, testing, integration, and
+            documentation, working across avionics, structures, and propulsion.
+          </p>
+          <p>
+            The avionics sled carries two independent dual-deploy altimeters and a Featherweight GPS
+            tracker, printed in ABS-GF for stiffness and heat resistance during summer launches. A
+            MATLAB shock-load calculator predicts parachute deployment loads and drives the
+            structural design; aluminum bulkheads were validated with ANSYS static FEA.
+          </p>
+          <dl class="project-specs">
+            <div><dt>Role</dt><dd>Recovery subsystem lead</dd></div>
+            <div><dt>Tools</dt><dd>SolidWorks, ANSYS, MATLAB</dd></div>
+            <div><dt>Architecture</dt><dd>Dual altimeters + GPS, dual deploy</dd></div>
+            <div><dt>Fabrication</dt><dd>ABS-GF print, machining, soldering</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- Aramis -->
+      <article class="project">
+        <p class="meta">Dec 2024 — Jun 2025<span class="sub">SEDS UNLV · IREC 2025</span></p>
+        <div class="project-media">
+          <figure class="main">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQUoxAz0XpqevyKDNJ2AGNZgm-RvkFYXvgRrCnBFqV9Iup4oT-q1X1gsfsZLXREjbAwrQZ6xeRriNOnC8LTGlvHwCTVXB9mjwF1bWtq7uVPro8XJ2VFmmR4gxSKrf0Ezj7dYuD8Xu7mIsFBgp5J-8C9IIWHoTpJof1Xolae7xwW5ZNWThKr0eFrlx6avpXE=w1280" alt="Aramis test flight">
+          </figure>
+          <div class="thumbs">
+            <figure>
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVhZtYSooT6Mp_0lxpCbRwxAyh0CBGICV7F7baxtUOhOpI70IDXLuPjEmp-meB6eLnBQHY_y5L0C3D31ttLLKBdiJGyrP2VwooM2IP2l5emjVt25saG8ux-eLVBFs78S68Bs1uL_RhlBAqfDT3cu3Iz754ra_6XaXDfasPN4QZJIb0xVYtYpuJIfAUKiIg=w1280" alt="Aramis avionics sled">
+              <figcaption>Avionics sled</figcaption>
+            </figure>
+            <figure class="light">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXUsrE_o1ZIMnQOONSZm_b-IE9K-5-ouPdlxnW3LhJAillYHgjSmn_9d3VJrH-HnTfC8TSdnuMZoC668p7VjRL0v1bV91Jh36EUaBd13bJXRFdxLYnubwOfb1QpNMBDaj8_qgjNQkTXGgex3fEpfdf1Uq66xg1gXfqOFG573YJ3Zr_h8GkbZstkph8S3L2qIyIBp36oSTg9nGLD24O_gcgLRCZIAzW8INBDqA=w1280" alt="Aramis recovery wiring diagram">
+              <figcaption>Wiring diagram</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3>Aramis — recovery subsystem engineer</h3>
+          <p>
+            Redesigned and 3D printed the recovery avionics sled, integrating an SRAD Eggtimer Quasar
+            with a COTS Altus Metrum TeleMetrum for independent apogee and main deployment circuits
+            plus live GPS telemetry.
+          </p>
+          <p>
+            Built an Excel black-powder charge calculator that predicted ejection forces within ±5%
+            of ground-test results, handled avionics integration and soldering, and ran OpenRocket
+            flight simulations. Aramis flew a nominal test flight, then a flawless competition flight.
+          </p>
+          <dl class="project-specs">
+            <div><dt>Role</dt><dd>Recovery subsystem engineer</dd></div>
+            <div><dt>Tools</dt><dd>SolidWorks, OpenRocket, Excel</dd></div>
+            <div><dt>Result</dt><dd>100% recovery score, IREC 2025</dd></div>
+            <div><dt>Division</dt><dd>10,000 ft COTS</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- Vulcan -->
+      <article class="project">
+        <p class="meta">Oct 2024 — Mar 2025<span class="sub">Tripoli Level 1 certification</span></p>
+        <div class="project-media">
+          <figure class="main">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVFX47uqdHSyXcQKUp_I4ZtE71ofxjpSR6m3vLX2j10dpN0w_ZBv1rr7_-iLpFyi5wBMKBCK3Q6QsUGBLpterLgdo1RzBW_Qp9Mdl-U91qlUVAeC0P4WNF8hRC2aRF4ZJn6pw4cTACHxrxpme-iE9LVyiou_08TTNT3ngQe1fRHGONxCg8b41Bjlimd-OQ=w1280" alt="Vulcan on the launch rail">
+          </figure>
+          <div class="thumbs">
+            <figure class="light">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXMHDXyhNJfXwaXftbFETrRhr2_NI-gRkKAt8lg7NW019FM64WZLgbKhK3PesBK6ttgAvwoR3zm55UhlvQwX1lifCnZlG52tf19LV0a6-bxXX8doDxcsYKWGhYLqGGz5IeNWZ3rjwmlzOX_KPET3ryW2jPz-4SmL-jE5lpKvOq32TVKPKeClpjQIoqJzlUZkN0mIarcidwBTsGG3p4MzP9zrGt-OQGzHxtox5eN5HQ=w1280" alt="Vulcan OpenRocket model">
+              <figcaption>OpenRocket model</figcaption>
+            </figure>
+            <figure>
+              <a href="https://www.youtube.com/watch?v=4QGgb7rxjw4" target="_blank" rel="noopener" style="display:grid;place-items:center;height:100%;color:var(--text-2);font-size:13px;text-align:center;padding:12px;">Launch video ↗</a>
+            </figure>
+          </div>
+        </div>
+        <div class="project-body">
+          <h3>Vulcan — Level 1 high-power rocket</h3>
+          <p>
+            Designed, built, and flew a 50-inch high-power rocket to earn Tripoli Rocketry
+            Association Level 1 certification. Simulated in OpenRocket for stability margin, motor
+            selection, apogee, and deployment timing before any parts were cut.
+          </p>
+          <p>
+            Fins were drafted in AutoCAD, laser-cut from plywood, and epoxied to the airframe.
+            Launched March 15, 2025 at a Tripoli-certified event with a nominal flight and
+            negligible damage on recovery.
+          </p>
+          <dl class="project-specs">
+            <div><dt>Length</dt><dd>50 in</dd></div>
+            <div><dt>Apogee</dt><dd>~2,500 ft</dd></div>
+            <div><dt>Stability</dt><dd>1.97 cal</dd></div>
+            <div><dt>Result</dt><dd>Certified, Mar 2025</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- Ski mount -->
+      <article class="project">
+        <p class="meta">Personal project<span class="sub">Ongoing</span></p>
+        <div class="project-media">
+          <figure class="main">
+            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXh75LkKKkleHiWA-7KcxkdJ4vtu0nywbn3laB8MoeBkR77hhagItOyeaQ6yYHDqsAG_MgfKk3UCjTzEKDe8Y7cpSNjUuGucQ8H3o6AQ5bq7j7rVci2DgJkKsxB6QIT3ZDXcANKt4U9D_vIXq8oz_6_C2k6hEzLJt32_lIwGvAHaerZmH72bUsCsKzPn80lfwjNe_W_pdyq4uINe0HC-ZaiPOcb845EGKNY_N5GS9g=w1280" alt="Vertical ski wall mount prototype">
+          </figure>
+        </div>
+        <div class="project-body">
+          <h3>Vertical ski wall mount</h3>
+          <p>
+            A custom mount that stores and displays skis in a compact footprint. Started for my own
+            skis and expanded to a small run for friends.
+          </p>
+          <p>
+            Current prototypes are 3D printed in PLA to iterate on geometry, fit, and load paths,
+            with a planned move to an engineering-grade filament or additively manufactured aluminum
+            for long-term durability.
+          </p>
+          <dl class="project-specs">
+            <div><dt>Stage</dt><dd>Prototype iteration</dd></div>
+            <div><dt>Material</dt><dd>PLA → engineering filament / Al</dd></div>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EXPERIENCE
+       ============================================================ -->
+  <section class="section" id="experience">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="meta">Experience</p>
+        <div><h2>Where I've worked</h2></div>
+      </div>
+
+      <ol class="timeline">
+        <li>
+          <div class="idx"><span class="meta">01</span><b>May 2026 — Aug 2026</b></div>
+          <div>
+            <h3>Anduril Industries</h3>
+            <p class="role">Electro-Mechanical Engineering Intern</p>
+          </div>
+          <ul class="detail">
+            <li>Redesigned a structural weldment riser supporting an electronic warfare platform in Siemens NX — drawings, ANSYS static FEA, and bolted-joint validation under wind loading. Standardized component sizing for a 54% cost reduction and 37 fewer hardware parts per unit.</li>
+            <li>Designed and built a modular sheet-metal bring-up station that turned a production assembly into a benchtop test fixture, routing RF and board-level interfaces to external access points for flashing, debug, and validation.</li>
+            <li>Owned mechanical development of a rugged handheld remote display unit from system requirements through detailed design: displays, buttons, gaskets, connectors, and internal electronics, in collaboration with electrical and software teams.</li>
+            <li>Designed sheet-metal enclosures for a laboratory RF test system, improving packaging, cable management, and serviceability.</li>
+          </ul>
+        </li>
+
+        <li>
+          <div class="idx"><span class="meta">02</span><b>May 2025 — Aug 2025</b></div>
+          <div>
+            <h3>Mako Advanced Materials</h3>
+            <p class="role">Engineering Intern</p>
+            <div class="exp-img">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQUK5KLUd_8XeBQq8yzXJeGc4Ve9DzQS-_W-DQtfSFIeTZilOBGKmUTB-GAy4B_YzUkO8U6FN0KbrmxzEG6RfYQ7cWX1sDmbgV0Cw9YVl95UUHYofDxKqk1gxyd9c_MbjCIPaRGEA7ws54EFFW0ikoX3fPlL2whN9vV7LQmQblRHDFky_3HDYUZSPFmHBaAQPN1dBhh4tM24Q4p_iOCZU4QxEbuBFHX3kF37i8Qd=w1280" alt="Composite test specimens and custom test fixtures at Mako Advanced Materials">
+            </div>
+          </div>
+          <ul class="detail">
+            <li>Ran ASTM materials testing on aerospace and MIL-spec composites — lap shear, 3-point bend, short beam shear, DMA — on a Tinius Olsen frame with Horizon software.</li>
+            <li>Performed prepreg quality control (flow, areal weight, resin consistency, ply thickness), logging 5–10 samples weekly to support certifications on 1–2 week lead times.</li>
+            <li>Prepared wet and prepreg layups for R&amp;D, producing 25–50 CNC-milled specimens weekly to UL94, FAR, and FAA specifications; modeled specimens in Fusion 360.</li>
+            <li>Upgraded gel timers, test frames, and flame test chambers with 3D-printed fixtures designed in Onshape.</li>
+          </ul>
+        </li>
+
+        <li>
+          <div class="idx"><span class="meta">03</span><b>Feb 2026 — May 2026</b></div>
+          <div>
+            <h3>SEDS UNLV</h3>
+            <p class="role">Secretary</p>
+            <p class="loc">Students for the Exploration and Development of Space</p>
+          </div>
+          <ul class="detail">
+            <li>Directed administrative operations for a 250+ member aerospace student organization.</li>
+            <li>Secured $18,000+ in new sponsorship funding.</li>
+          </ul>
+        </li>
+
+        <li>
+          <div class="idx"><span class="meta">04</span><b>Apr 2025 — May 2025</b></div>
+          <div>
+            <h3>UNLV Office of Economic Development</h3>
+            <p class="role">Makerspace Creator Intern</p>
+            <div class="exp-img">
+              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQX74nfCSee20zlorLJkNORs-PSP46X6sPXxTvmnW45dx_j9FcOhsrlONCinv_2ohX4vGULz09l5BzjIWl5XBERI3YNoXZACa-qEVzhkYYq-3kZzrRwxYlXXKnbAL8VEzXtGB69aLvmY8ZOLi_fHrtqnTkmD7JJeewtXzwUaRt6NB5Sk4EIV2q9uQxleCVxj3w-7CVy93_U9u4RIzi7KPijpQdCGnKXvOviH9Ur-=w1280" alt="Scale furniture prototypes fabricated at the UNLV makerspace">
+            </div>
+          </div>
+          <ul class="detail">
+            <li>Engineered and fabricated 1/8-scale plywood and 1/32-scale 3D-printed furniture prototypes for special-needs children in under a week using AutoCAD, LightBurn laser cutting, CNC milling, and 3D printing.</li>
+            <li>Developed visual design concepts for design validation, public outreach, and fundraising.</li>
+          </ul>
+        </li>
+
+        <li>
+          <div class="idx"><span class="meta">05</span><b>Apr 2024 — Jul 2024</b></div>
+          <div>
+            <h3>Marnell Companies</h3>
+            <p class="role">Architectural Intern</p>
+          </div>
+          <ul class="detail">
+            <li>Built full-scale exterior 2D and 3D Revit models of Harvey's Lake Tahoe Hotel and Casino from LiDAR scans, AutoCAD drawings, and architectural plans to baseline a 1.6 million sq ft renovation.</li>
+            <li>Identified and corrected undocumented remodels and misaligned structural elements in the models.</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CAPABILITIES
+       ============================================================ -->
+  <section class="section" id="capabilities">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="meta">Capabilities</p>
+        <div><h2>Tools and methods</h2></div>
+      </div>
+
+      <div class="cap-grid">
+        <div class="cap">
+          <h3>Design</h3>
+          <ul>
+            <li>Siemens NX, SolidWorks</li>
+            <li>Fusion 360, Onshape, AutoCAD, Revit</li>
+            <li>Manufacturing drawings</li>
+            <li>Sheet metal and weldment design</li>
+            <li>DFM for printing, machining, composites</li>
+          </ul>
+        </div>
+        <div class="cap">
+          <h3>Analysis</h3>
+          <ul>
+            <li>ANSYS static structural FEA</li>
+            <li>Bolted-joint and wind-load validation</li>
+            <li>MATLAB (shock-load modeling)</li>
+            <li>OpenRocket flight simulation</li>
+            <li>Excel engineering calculators</li>
+          </ul>
+        </div>
+        <div class="cap">
+          <h3>Fabrication</h3>
+          <ul>
+            <li>3D printing — ABS-GF, PETG, PLA</li>
+            <li>CNC milling, laser cutting</li>
+            <li>Wet and prepreg composite layup</li>
+            <li>Soldering, epoxy bonding</li>
+            <li>Avionics integration</li>
+          </ul>
+        </div>
+        <div class="cap">
+          <h3>Test &amp; documentation</h3>
+          <ul>
+            <li>ASTM composite testing, DMA</li>
+            <li>Tinius Olsen / Horizon</li>
+            <li>Ejection charge ground testing</li>
+            <li>Flight telemetry analysis</li>
+            <li>BOMs, progress reports, config control</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONTACT
+       ============================================================ -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <h2>Looking for a Summer 2027 mechanical engineering internship.</h2>
+      <div class="contact-row">
+        <p class="meta">Contact</p>
+        <div>
+          <a href="mailto:tothd3@unlv.nevada.edu">tothd3@unlv.nevada.edu</a>
+          <a href="mailto:dominiktoth28@gmail.com">dominiktoth28@gmail.com</a>
+          <a href="tel:+17023515821">(702) 351-5821</a>
+        </div>
+        <div>
+          <a href="https://www.linkedin.com/in/dominiktoth1/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="Dominik_Toth_Resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="meta">© 2026 Dominik Toth</span>
+    <span class="meta">Las Vegas, Nevada</span>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.textContent = open ? 'Close' : 'Menu';
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = 'Menu';
+  }));
+</script>
+</body>
+</html>
