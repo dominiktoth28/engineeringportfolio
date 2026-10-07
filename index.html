@@ -4,701 +4,848 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dominik Toth — Mechanical Engineering</title>
-<meta name="description" content="Dominik Toth is a mechanical engineering undergraduate at UNLV focused on flight hardware, recovery systems, and design for manufacturability.">
+<meta name="description" content="Dominik Toth — mechanical engineering at UNLV. Flight hardware, recovery systems, and electro-mechanical design.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ============================================================
-     TOKENS
-     ============================================================ */
-  :root {
-    --bg:        #000000;
-    --bg-raised: #0d0d0d;
-    --rule:      #262626;
-    --rule-soft: #171717;
-    --text:      #f2f2f2;
-    --text-2:    #9a9a9a;
-    --text-3:    #5c5c5c;
+/* ==========================================================================
+   TOKENS
+   ========================================================================== */
+:root {
+  --bg:        #000000;
+  --panel:     #0a0a0a;
+  --line:      #2a2a2a;
+  --line-soft: #161616;
+  --text:      #ededed;
+  --muted:     #8c8c8c;
+  --dim:       #555555;
+  --plate:     #e6e5e0;   /* light "spec plate" panels */
+  --ink:       #0a0a0a;
+  --accent:    #ff5a1f;   /* signal orange — progress, status, markers only */
 
-    --font: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --sans: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-    --gutter: clamp(20px, 5vw, 72px);
-    --max:    1440px;
-    --nav-h:  64px;
-  }
+  --gutter: clamp(20px, 5vw, 72px);
+  --max: 1440px;
+  --nav-h: 60px;
+}
 
-  /* ============================================================
-     BASE
-     ============================================================ */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font);
-    font-size: 16px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-  img, video { display: block; max-width: 100%; }
-  a { color: inherit; text-decoration: none; }
-  a:focus-visible, button:focus-visible { outline: 1px solid var(--text); outline-offset: 4px; }
-  ul, ol { list-style: none; }
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--sans); font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+ul, ol { list-style: none; }
+[hidden] { display: none !important; }
 
-  .wrap {
-    width: 100%;
-    max-width: var(--max);
-    margin: 0 auto;
-    padding-left: var(--gutter);
-    padding-right: var(--gutter);
-  }
+.wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+.mono { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+.muted { color: var(--muted); }
+.dim { color: var(--dim); }
+.sq { display: inline-block; width: 7px; height: 7px; background: var(--accent); vertical-align: 1px; }
 
-  .meta {
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-2);
-    font-weight: 500;
-  }
+/* ==========================================================================
+   NAV
+   ========================================================================== */
+.nav {
+  position: fixed; inset: 0 0 auto 0; height: var(--nav-h); z-index: 50;
+  display: flex; align-items: center;
+  border-bottom: 1px solid transparent;
+  transition: background .3s, border-color .3s;
+}
+.nav.solid { background: rgba(0,0,0,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom-color: var(--line-soft); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.brand { display: flex; align-items: baseline; gap: 14px; }
+.brand b { font-weight: 700; font-size: 15px; letter-spacing: -0.02em; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { font-size: 13px; color: var(--muted); transition: color .2s; }
+.nav-links a:hover { color: var(--text); }
+.nav-clock { color: var(--dim); }
 
-  /* ============================================================
-     NAV
-     ============================================================ */
-  .nav {
-    position: fixed;
-    inset: 0 0 auto 0;
-    height: var(--nav-h);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid transparent;
-    transition: background 0.3s, border-color 0.3s;
-  }
-  .nav.is-scrolled {
-    background: rgba(0,0,0,0.78);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom-color: var(--rule-soft);
-  }
-  .nav .wrap { display: flex; align-items: center; justify-content: space-between; }
-  .brand { font-weight: 700; letter-spacing: -0.02em; font-size: 15px; }
-  .brand span { color: var(--text-3); font-weight: 400; margin-left: 10px; }
-  .nav-links { display: flex; gap: 32px; }
-  .nav-links a { font-size: 13px; color: var(--text-2); transition: color 0.2s; }
-  .nav-links a:hover { color: var(--text); }
-  .nav-toggle { display: none; background: none; border: 0; color: var(--text); font: inherit; font-size: 13px; cursor: pointer; }
+/* ==========================================================================
+   COVER
+   ========================================================================== */
+.cover {
+  position: relative; min-height: 100svh; overflow: hidden;
+  display: grid; grid-template-rows: 1fr auto;
+  padding-top: var(--nav-h);
+}
+.cover::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at 75% 45%, #000 0%, transparent 65%);
+  -webkit-mask-image: radial-gradient(ellipse at 75% 45%, #000 0%, transparent 65%);
+}
+/* registration marks in the corners */
+.mark { position: absolute; width: 16px; height: 16px; }
+.mark::before, .mark::after { content: ""; position: absolute; background: var(--dim); }
+.mark::before { left: 7px; top: 0; width: 1px; height: 16px; }
+.mark::after  { top: 7px; left: 0; height: 1px; width: 16px; }
+.mark.tl { top: calc(var(--nav-h) + 16px); left: 16px; }
+.mark.tr { top: calc(var(--nav-h) + 16px); right: 16px; }
+.mark.bl { bottom: 16px; left: 16px; }
+.mark.br { bottom: 16px; right: 16px; }
 
-  /* ============================================================
-     HERO
-     ============================================================ */
-  .hero {
-    min-height: 100svh;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    padding-top: var(--nav-h);
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--rule-soft) 1px, transparent 1px),
-      linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
-    background-size: 96px 96px;
-    mask-image: radial-gradient(ellipse at 70% 40%, #000 0%, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding-top: 12vh;
-    padding-bottom: 56px;
-    position: relative;
-  }
-  .hero .meta { margin-bottom: 28px; }
-  .hero h1 {
-    font-size: clamp(42px, 8vw, 132px);
-    line-height: 0.92;
-    letter-spacing: -0.045em;
-    font-weight: 700;
-    max-width: 15ch;
-  }
-  .hero-sub {
-    margin-top: 32px;
-    max-width: 50ch;
-    font-size: clamp(16px, 1.3vw, 20px);
-    line-height: 1.45;
-    color: var(--text-2);
-  }
+.cover-main { position: relative; display: flex; flex-direction: column; justify-content: center; padding-top: 6vh; padding-bottom: 6vh; }
+.cover h1 {
+  font-size: clamp(64px, 14vw, 232px); line-height: .84; letter-spacing: -0.055em; font-weight: 700;
+}
+.cover h1 span { display: block; }
+.cover-sub { margin-top: 36px; max-width: 40ch; font-size: clamp(16px, 1.4vw, 20px); color: var(--muted); line-height: 1.4; }
 
-  .spec {
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    position: relative;
-  }
-  .spec div { padding: 22px 24px 24px 0; border-right: 1px solid var(--rule); margin-right: 24px; }
-  .spec div:last-child { border-right: 0; margin-right: 0; }
-  .spec dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); font-weight: 500; }
-  .spec dd { margin-top: 10px; font-size: 15px; font-weight: 500; }
+.readouts {
+  position: relative; display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line); margin-bottom: 48px;
+}
+.readouts div { padding: 16px 16px 0 0; display: flex; flex-direction: column; gap: 6px; }
+.readouts .k { color: var(--dim); }
+.readouts .v { color: var(--text); }
+.scroll-cue { display: inline-flex; gap: 10px; align-items: center; }
+.scroll-cue i { display: block; width: 1px; height: 14px; background: var(--accent); animation: cue 1.8s ease-in-out infinite; transform-origin: top; }
+@keyframes cue { 0%,100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
 
-  .reveal { opacity: 0; transform: translateY(14px); animation: rise 0.9s cubic-bezier(.2,.7,.2,1) forwards; }
-  .reveal:nth-child(2) { animation-delay: 0.1s; }
-  .reveal:nth-child(3) { animation-delay: 0.2s; }
-  .spec.reveal { animation-delay: 0.32s; }
-  @keyframes rise { to { opacity: 1; transform: none; } }
+.reveal { opacity: 0; transform: translateY(16px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+.d1 { animation-delay: .1s; } .d2 { animation-delay: .22s; } .d3 { animation-delay: .38s; }
+@keyframes rise { to { opacity: 1; transform: none; } }
 
-  /* ============================================================
-     SECTIONS
-     ============================================================ */
-  .section { border-top: 1px solid var(--rule); padding: 96px 0; }
-  .section-head { display: grid; grid-template-columns: 200px 1fr; gap: 40px; margin-bottom: 64px; }
-  .section-head h2 { font-size: clamp(28px, 3.2vw, 44px); letter-spacing: -0.03em; line-height: 1.05; font-weight: 700; }
-  .section-head p { margin-top: 18px; max-width: 58ch; color: var(--text-2); font-size: 17px; }
+/* ==========================================================================
+   TIMELINE
+   ========================================================================== */
+.tl { border-top: 1px solid var(--line); padding-top: 72px; }
+.tl-head { display: grid; grid-template-columns: 160px 1fr; gap: 0 32px; margin-bottom: 48px; }
+.tl-head h2 { font-size: clamp(32px, 4vw, 56px); letter-spacing: -0.04em; line-height: 1; font-weight: 700; }
+.tl-head p { margin-top: 16px; color: var(--muted); max-width: 54ch; font-size: 17px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 28px; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); }
 
-  /* --- About --- */
-  .about-grid { display: grid; grid-template-columns: 200px 1fr 1fr; gap: 40px; }
-  .about-grid p { font-size: 18px; line-height: 1.55; max-width: 52ch; }
-  .about-grid p + p { margin-top: 20px; }
-  .about-list li {
-    display: flex; justify-content: space-between; gap: 24px;
-    padding: 14px 0; border-bottom: 1px solid var(--rule-soft); font-size: 15px;
-  }
-  .about-list li:first-child { border-top: 1px solid var(--rule-soft); }
-  .about-list li span:last-child { color: var(--text-2); text-align: right; }
-  .about-list a { text-decoration: underline; text-underline-offset: 3px; }
-  .about-list a:hover { color: var(--text); }
+.tag-sw { width: 8px; height: 8px; display: inline-block; flex: none; }
+.c-work       { background: var(--accent); }
+.c-project    { background: var(--text); }
+.c-leadership { background: var(--dim); }
+.c-education  { border: 1px solid var(--text); }
 
-  /* --- Projects --- */
-  .project {
-    display: grid;
-    grid-template-columns: 200px 1fr 1fr;
-    gap: 40px;
-    padding: 56px 0;
-    border-top: 1px solid var(--rule-soft);
-  }
-  .project:last-child { border-bottom: 1px solid var(--rule-soft); }
-  .project-media figure {
-    background: var(--bg-raised);
-    border: 1px solid var(--rule-soft);
-    overflow: hidden;
-  }
-  .project-media figure.main { aspect-ratio: 4 / 3; }
-  .project-media img { width: 100%; height: 100%; object-fit: cover; }
-  .project-media figcaption { font-size: 11px; color: var(--text-3); padding: 8px 0 0; letter-spacing: 0.02em; }
-  .thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-  .thumbs figure { aspect-ratio: 4 / 3; }
-  .thumbs figure.light img { background: #fff; object-fit: contain; }
-  .project h3 { font-size: clamp(22px, 2vw, 28px); letter-spacing: -0.025em; line-height: 1.1; font-weight: 700; }
-  .project-body > p { margin-top: 18px; color: var(--text-2); max-width: 50ch; }
-  .project-specs { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
-  .project-specs div { padding: 12px 0; border-top: 1px solid var(--rule-soft); }
-  .project-specs dt { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
-  .project-specs dd { margin-top: 6px; font-size: 14px; }
-  .project-link {
-    display: inline-block; margin-top: 28px; font-size: 13px;
-    border-bottom: 1px solid var(--text-3); padding-bottom: 2px; transition: border-color 0.2s;
-  }
-  .project-link:hover { border-color: var(--text); }
-  .project .meta .sub { display: block; margin-top: 6px; color: var(--text-3); text-transform: none; letter-spacing: 0; font-size: 12px; }
+.group { display: grid; grid-template-columns: 160px minmax(0,1fr); gap: 0 32px; }
+.group-label {
+  position: sticky; top: calc(var(--nav-h) + 28px); align-self: start;
+  padding-top: 30px;
+  font-size: 52px; font-weight: 700; letter-spacing: -0.045em; line-height: 1;
+}
+.group-label small { display: block; margin-top: 10px; font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: .04em; color: var(--dim); text-transform: uppercase; }
+.group.now .group-label { color: var(--accent); }
 
-  /* --- Experience --- */
-  .timeline li {
-    display: grid; grid-template-columns: 200px 1fr 1fr; gap: 40px;
-    padding: 36px 0; border-top: 1px solid var(--rule-soft);
-  }
-  .timeline li:last-child { border-bottom: 1px solid var(--rule-soft); }
-  .timeline .idx { display: flex; flex-direction: column; gap: 6px; }
-  .timeline .idx b { font-weight: 500; font-size: 13px; color: var(--text); }
-  .timeline h3 { font-size: 20px; letter-spacing: -0.02em; font-weight: 700; line-height: 1.2; }
-  .timeline .role { margin-top: 6px; color: var(--text-2); font-size: 15px; }
-  .timeline .loc { margin-top: 4px; color: var(--text-3); font-size: 13px; }
-  .timeline .detail { color: var(--text-2); font-size: 15px; }
-  .timeline .detail li { display: block; padding: 0 0 0 16px; border: 0; margin-bottom: 10px; position: relative; }
-  .timeline .detail li::before { content: "—"; position: absolute; left: 0; color: var(--text-3); }
-  .timeline .exp-img {
-    margin-top: 20px; aspect-ratio: 16 / 9; overflow: hidden;
-    border: 1px solid var(--rule-soft); background: var(--bg-raised);
-  }
-  .timeline .exp-img img { width: 100%; height: 100%; object-fit: cover; }
+.entry {
+  --node-x: 182px;          /* date col 130 + gap 24 + half node 28/2... kept in sync below */
+  --fill: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: 130px 56px minmax(0,1fr) 300px;
+  grid-template-areas: "date node body media";
+  gap: 0 24px;
+  padding: 36px 0;
+  border-top: 1px solid var(--line-soft);
+  transition: background .25s;
+}
+.group:first-of-type .entry:first-child, .group .entry:first-child { border-top-color: var(--line); }
+.entry::before, .entry::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: var(--node-x); width: 1px;
+}
+.entry::before { background: var(--line); }
+.entry::after  { background: var(--accent); transform-origin: top; transform: scaleY(var(--fill)); }
+.entry:hover { background: var(--panel); }
 
-  /* --- Capabilities --- */
-  .cap-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
-  .cap { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 28px 24px 32px; min-height: 240px; }
-  .cap h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
-  .cap ul { margin-top: 18px; }
-  .cap li { font-size: 14px; color: var(--text-2); padding: 4px 0; }
+.e-date { grid-area: date; display: flex; flex-direction: column; gap: 4px; padding-top: 3px; }
+.e-node { grid-area: node; position: relative; }
+.e-node i {
+  position: absolute; left: 50%; top: 6px; width: 9px; height: 9px; transform: translateX(-50%);
+  background: var(--bg); border: 1px solid var(--muted); z-index: 1;
+  transition: background .3s, border-color .3s;
+}
+.entry.past .e-node i { background: var(--accent); border-color: var(--accent); }
 
-  /* --- Contact --- */
-  .contact { padding: 120px 0 96px; border-top: 1px solid var(--rule); }
-  .contact h2 { font-size: clamp(36px, 6vw, 96px); letter-spacing: -0.04em; line-height: 0.95; font-weight: 700; max-width: 18ch; }
-  .contact-row { margin-top: 56px; display: grid; grid-template-columns: 200px 1fr 1fr; gap: 40px; }
-  .contact-row a { display: block; font-size: 17px; padding: 14px 0; border-bottom: 1px solid var(--rule-soft); transition: color 0.2s; }
-  .contact-row a:hover { color: var(--text-2); }
-  .contact-row a:first-child { border-top: 1px solid var(--rule-soft); }
+.e-body { grid-area: body; min-width: 0; }
+.e-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.e-top .cat { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); }
+.e-body h3 { font-size: clamp(22px, 2.2vw, 32px); letter-spacing: -0.03em; line-height: 1.05; font-weight: 700; }
+.e-role { margin-top: 8px; color: var(--muted); font-size: 15px; }
+.e-sum { margin-top: 16px; max-width: 52ch; font-size: 16px; }
+.e-more { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; font-size: 13px; color: var(--muted); transition: color .2s; }
+.e-more::after { content: ""; width: 24px; height: 1px; background: currentColor; transition: width .25s; }
+.entry:hover .e-more { color: var(--accent); }
+.entry:hover .e-more::after { width: 40px; }
 
-  footer { border-top: 1px solid var(--rule); padding: 24px 0; }
-  footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.e-media { grid-area: media; }
+.frame { position: relative; aspect-ratio: 4 / 3; background: var(--panel); border: 1px solid var(--line-soft); overflow: hidden; }
+.frame img { width: 100%; height: 100%; object-fit: cover; }
+.frame.light { background: #fff; }
+.frame.light img { object-fit: contain; }
 
-  /* ============================================================
-     RESPONSIVE
-     ============================================================ */
-  @media (max-width: 1024px) {
-    .spec { grid-template-columns: repeat(3, 1fr); }
-    .spec div:nth-child(3) { border-right: 0; }
-    .spec div:nth-child(n+4) { border-top: 1px solid var(--rule); }
-    .cap-grid { grid-template-columns: repeat(2, 1fr); }
-    .section-head, .about-grid, .project, .timeline li, .contact-row { grid-template-columns: 140px 1fr; }
-    .about-grid > *:nth-child(3), .project-body, .timeline .detail, .contact-row > *:nth-child(3) { grid-column: 2; }
+/* spec plate — light panel with a key figure */
+.plate {
+  position: relative; aspect-ratio: 4 / 3; background: var(--plate); color: var(--ink);
+  padding: 18px 20px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;
+}
+.plate::after { content: ""; position: absolute; top: 18px; right: 20px; width: 9px; height: 9px; background: var(--accent); }
+.plate .ph { color: #6b6b66; }
+.plate .pv { font-size: clamp(40px, 4.4vw, 64px); font-weight: 700; letter-spacing: -0.05em; line-height: .95; }
+.plate .pl { margin-top: 8px; font-size: 13px; line-height: 1.35; color: #3a3a37; max-width: 26ch; }
+/* ruler ticks along the bottom edge */
+.plate .ticks { position: absolute; left: 0; right: 0; bottom: 0; height: 8px;
+  background-image: linear-gradient(90deg, #a9a8a2 1px, transparent 1px); background-size: 10px 8px; opacity: .7; }
+
+/* ==========================================================================
+   TOOLS + CONTACT
+   ========================================================================== */
+.section { border-top: 1px solid var(--line); padding: 96px 0; margin-top: 0; }
+.s-head { display: grid; grid-template-columns: 160px 1fr; gap: 0 32px; margin-bottom: 48px; }
+.s-head h2 { font-size: clamp(28px, 3.2vw, 44px); letter-spacing: -0.035em; line-height: 1.05; font-weight: 700; }
+.tools { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.tools div { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 22px 28px; }
+.tools h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; display: flex; justify-content: space-between; }
+.tools ul { margin-top: 16px; }
+.tools li { font-size: 14px; color: var(--muted); padding: 3px 0; }
+
+.contact h2 { font-size: clamp(40px, 6.4vw, 104px); letter-spacing: -0.05em; line-height: .92; font-weight: 700; max-width: 16ch; }
+.contact-grid { margin-top: 56px; display: grid; grid-template-columns: 160px 1fr 1fr; gap: 0 32px; }
+.contact-grid a { display: flex; justify-content: space-between; font-size: 17px; padding: 14px 0; border-bottom: 1px solid var(--line-soft); transition: color .2s; }
+.contact-grid a:first-child { border-top: 1px solid var(--line-soft); }
+.contact-grid a:hover { color: var(--accent); }
+.contact-grid a span { color: var(--dim); }
+
+footer { border-top: 1px solid var(--line); padding: 22px 0; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+/* ==========================================================================
+   DETAIL PAGE
+   ========================================================================== */
+.detail { padding-top: var(--nav-h); }
+.d-bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 28px; padding-bottom: 28px; }
+.d-bar a { font-size: 13px; color: var(--muted); transition: color .2s; }
+.d-bar a:hover { color: var(--accent); }
+.d-pn { display: flex; gap: 24px; }
+
+.d-head { padding-top: 40px; padding-bottom: 48px; }
+.d-code { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; color: var(--muted); }
+.d-head h1 { font-size: clamp(44px, 7.6vw, 124px); letter-spacing: -0.05em; line-height: .9; font-weight: 700; max-width: 14ch; }
+.d-head .d-role { margin-top: 24px; font-size: clamp(17px, 1.5vw, 22px); color: var(--muted); }
+.d-meta { margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+.d-meta div { padding: 16px 16px 0 0; display: flex; flex-direction: column; gap: 6px; }
+.d-meta .k { color: var(--dim); }
+.d-meta .v { font-size: 15px; }
+
+.d-hero { margin-bottom: 72px; }
+.d-hero .frame { aspect-ratio: 16 / 9; max-height: 78vh; width: 100%; }
+.d-hero .plate { aspect-ratio: 21 / 8; width: 100%; }
+.d-hero .plate { padding: clamp(20px, 3vw, 40px); }
+.d-hero .plate .pv { font-size: clamp(64px, 12vw, 200px); }
+.d-hero .plate .pl { font-size: clamp(14px, 1.3vw, 18px); max-width: 34ch; }
+.d-hero .plate::after { top: clamp(20px, 3vw, 40px); right: clamp(20px, 3vw, 40px); width: 12px; height: 12px; }
+.d-hero .plate .ticks { height: 12px; background-size: 14px 12px; }
+
+.d-grid { display: grid; grid-template-columns: 300px minmax(0,1fr); gap: 0 72px; padding-bottom: 80px; }
+.d-aside { position: sticky; top: calc(var(--nav-h) + 24px); align-self: start; }
+.d-specs div { display: flex; flex-direction: column; gap: 6px; padding: 14px 0; border-top: 1px solid var(--line-soft); }
+.d-specs div:last-child { border-bottom: 1px solid var(--line-soft); }
+.d-specs dt { color: var(--dim); }
+.d-specs dd { font-size: 15px; }
+.d-stats { margin-top: 24px; display: grid; gap: 12px; }
+.d-stats .plate { aspect-ratio: auto; min-height: 140px; }
+.d-stats .plate .pv { font-size: 44px; }
+
+.d-main h2 { font-size: 13px; font-family: var(--mono); font-weight: 400; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 56px 0 20px; display: flex; align-items: center; gap: 12px; }
+.d-main h2:first-child { margin-top: 0; }
+.d-main h2::after { content: ""; flex: 1; height: 1px; background: var(--line-soft); }
+.d-main p { font-size: 19px; line-height: 1.55; max-width: 62ch; }
+.d-main p + p { margin-top: 20px; }
+.d-list li { position: relative; padding: 14px 0 14px 28px; border-top: 1px solid var(--line-soft); font-size: 16px; max-width: 70ch; }
+.d-list li:last-child { border-bottom: 1px solid var(--line-soft); }
+.d-list li::before { content: ""; position: absolute; left: 2px; top: 22px; width: 7px; height: 7px; background: var(--accent); }
+.d-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.d-links a { border: 1px solid var(--line); padding: 10px 16px; font-size: 14px; transition: border-color .2s, color .2s; }
+.d-links a:hover { border-color: var(--accent); color: var(--accent); }
+
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px 24px; padding-bottom: 96px; }
+.gallery figure .frame { aspect-ratio: 4 / 3; }
+.gallery figcaption { display: flex; gap: 14px; padding-top: 12px; font-size: 14px; color: var(--muted); }
+.gallery figcaption .mono { color: var(--dim); flex: none; padding-top: 2px; }
+
+.d-next { display: block; border-top: 1px solid var(--line); padding: 56px 0 72px; transition: background .25s; }
+.d-next:hover { background: var(--panel); }
+.d-next .mono { color: var(--dim); display: flex; gap: 12px; align-items: center; }
+.d-next b { display: block; margin-top: 16px; font-size: clamp(36px, 6vw, 96px); letter-spacing: -0.05em; line-height: .95; transition: color .2s; }
+.d-next:hover b { color: var(--accent); }
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .entry { grid-template-columns: 110px 40px minmax(0,1fr) 220px; --node-x: 154px; }
+  .tools { grid-template-columns: repeat(2, 1fr); }
+  .d-grid { grid-template-columns: 240px minmax(0,1fr); gap: 0 48px; }
+}
+@media (max-width: 860px) {
+  :root { --nav-h: 56px; }
+  .nav-clock, .nav-links a.hide-sm { display: none; }
+  .readouts { grid-template-columns: 1fr 1fr; }
+  .readouts div:nth-child(n+3) { padding-top: 20px; }
+  .tl-head, .s-head, .group, .contact-grid { grid-template-columns: 1fr; }
+  .group-label {
+    position: relative; top: auto; padding: 36px 0 20px 52px;
+    font-size: 40px; display: flex; align-items: baseline; gap: 14px;
   }
-  @media (max-width: 680px) {
-    :root { --nav-h: 56px; }
-    .nav-links {
-      display: none; position: absolute; top: var(--nav-h); left: 0; right: 0;
-      flex-direction: column; gap: 0; background: #000; border-bottom: 1px solid var(--rule);
-    }
-    .nav-links.is-open { display: flex; }
-    .nav-links a { padding: 16px var(--gutter); border-top: 1px solid var(--rule-soft); font-size: 15px; }
-    .nav-toggle { display: block; }
-    .spec { grid-template-columns: 1fr 1fr; }
-    .spec div { border-right: 0; margin-right: 0; padding-right: 16px; }
-    .spec div:nth-child(odd) { border-right: 1px solid var(--rule); }
-    .spec div:nth-child(n+3) { border-top: 1px solid var(--rule); }
-    .section { padding: 64px 0; }
-    .section-head, .about-grid, .project, .timeline li, .contact-row { grid-template-columns: 1fr; gap: 20px; }
-    .about-grid > *:nth-child(3), .project-body, .timeline .detail, .contact-row > *:nth-child(3) { grid-column: auto; }
-    .section-head { margin-bottom: 40px; }
-    .cap-grid { grid-template-columns: 1fr; }
-    .cap { min-height: 0; }
+  .group-label small { margin-top: 0; }
+  .group-label::before { content: ""; position: absolute; left: 14px; top: 0; bottom: 0; width: 1px; background: var(--line); }
+  .entry {
+    --node-x: 14px;
+    grid-template-columns: 28px minmax(0,1fr);
+    grid-template-areas: "node date" "node body" "node media";
+    gap: 0 24px; padding: 28px 0;
   }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .reveal { animation: none; opacity: 1; transform: none; }
-    * { transition: none !important; }
-  }
+  .e-date { flex-direction: row; gap: 8px; margin-bottom: 12px; padding-top: 0; }
+  .e-node i { top: 3px; }
+  .e-media { margin-top: 22px; }
+  .tools { grid-template-columns: 1fr; }
+  .d-meta { grid-template-columns: 1fr 1fr; }
+  .d-meta div:nth-child(n+3) { padding-top: 20px; }
+  .d-grid { grid-template-columns: 1fr; gap: 48px; }
+  .d-aside { position: static; }
+  .gallery { grid-template-columns: 1fr; }
+  .d-hero .frame { aspect-ratio: 4 / 3; }
+  .d-hero .plate { aspect-ratio: 4 / 3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none; opacity: 1; transform: none; }
+  .scroll-cue i { animation: none; }
+  * { transition: none !important; }
+}
 </style>
 </head>
 <body>
 
 <header class="nav" id="nav">
   <div class="wrap">
-    <a href="#top" class="brand">DOMINIK TOTH</span></a>
-    <nav class="nav-links" id="navLinks" aria-label="Primary">
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#experience">Experience</a>
-      <a href="#capabilities">Capabilities</a>
+    <a href="#/" class="brand"><b>Dominik Toth</b><span class="mono dim">Rev 26.10</span></a>
+    <nav class="nav-links" aria-label="Primary">
+      <span class="mono nav-clock" id="clock">LAS — --:--:-- PT</span>
+      <a href="#timeline" class="hide-sm">Timeline</a>
       <a href="#contact">Contact</a>
+      <a href="Dominik_Toth_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
     </nav>
-    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
   </div>
 </header>
 
-<main id="top">
+<!-- ======================================================================
+     HOME VIEW
+     ====================================================================== -->
+<main id="home">
 
-  <!-- ============================================================
-       HERO
-       ============================================================ -->
-  <section class="hero">
-    <div class="wrap hero-main">
-      <p class="meta reveal">Dominik Toth — Las Vegas, Nevada</p>
-      <h1 class="reveal">Mechanical Engineering Portfolio</h1>
-      <p class="hero-sub reveal">
-        Mechanical engineering undergraduate at UNLV. I design, analyze, build, and test recovery
-        systems and electro-mechanical hardware — from CAD and FEA through 3D printing, machining,
-        and flight.
-      </p>
+  <section class="cover">
+    <span class="mark tl"></span><span class="mark tr"></span><span class="mark bl"></span><span class="mark br"></span>
+
+    <div class="wrap cover-main">
+      <h1 class="reveal"><span>Dominik</span><span>Toth</span></h1>
+      <p class="cover-sub reveal d1">Mechanical engineer. Flight hardware, recovery systems, and electro-mechanical design.</p>
     </div>
+
     <div class="wrap">
-      <dl class="spec reveal">
-        <div><dt>Discipline</dt><dd>B.S. Mechanical Engineering</dd></div>
-        <div><dt>Institution</dt><dd>University of Nevada, Las Vegas</dd></div>
-        <div><dt>Graduation</dt><dd>May 2027</dd></div>
-        <div><dt>Most recent</dt><dd>Anduril Industries, EME Intern</dd></div>
-        <div><dt>Status</dt><dd>Open to Summer 2027 internships</dd></div>
-      </dl>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       ABOUT
-       ============================================================ -->
-  <section class="section" id="about">
-    <div class="wrap about-grid">
-      <p class="meta">About</p>
-      <div>
-        <p>
-          I'm a third-year mechanical engineering student at UNLV with a strong interest in
-          engineering design and hands-on problem solving. Most of my time outside class goes to
-          SEDS UNLV, where I lead the recovery subsystem for our IREC rocket — designing flight
-          hardware, validating deployment systems, and supporting vehicle integration and testing.
-        </p>
-        <p>
-          I enjoy taking ideas from concept to reality, with an emphasis on 3D CAD, design for
-          manufacturability, and iterative prototyping. I'm drawn to technically demanding projects
-          that require careful design, testing, and execution.
-        </p>
+      <div class="readouts reveal d3">
+        <div><span class="mono k">Program</span><span class="mono v">B.S. Mech. Eng. — UNLV ’27</span></div>
+        <div><span class="mono k">Position</span><span class="mono v">36.1699° N 115.1398° W</span></div>
+        <div><span class="mono k">Status</span><span class="mono v"><span class="sq"></span>&nbsp; Open — Summer 2027</span></div>
+        <div><span class="mono k">Index</span><a href="#timeline" class="mono v scroll-cue"><i></i><span id="entryCount">— entries</span></a></div>
       </div>
-      <ul class="about-list">
-        <li><span>GPA</span><span>3.74 / 4.00</span></li>
-        <li><span>Expected graduation</span><span>May 2027</span></li>
-        <li><span>Team</span><span>SEDS UNLV — IREC Recovery Lead</span></li>
-        <li><span>Certification</span><span>Tripoli Rocketry Association Level 1</span></li>
-        <li><span>Résumé</span><span><a href="Dominik_Toth_Resume.pdf" target="_blank" rel="noopener">Download PDF</a></span></li>
-      </ul>
     </div>
   </section>
 
-  <!-- ============================================================
-       PROJECTS
-       ============================================================ -->
-  <section class="section" id="projects">
+  <section class="tl" id="timeline">
     <div class="wrap">
-      <div class="section-head">
-        <p class="meta">Projects</p>
+      <div class="tl-head">
+        <span class="mono dim">Timeline</span>
         <div>
-          <h2>Selected work</h2>
-          <p>Recovery systems for two IREC competition rockets, a Tripoli Level 1 certification vehicle, and a personal design project.</p>
+          <h2>2023 — present</h2>
+          <p>Work, projects, and leadership in order, newest first. Select any entry for the full write-up.</p>
+          <div class="legend">
+            <span class="mono"><i class="tag-sw c-work"></i>Work</span>
+            <span class="mono"><i class="tag-sw c-project"></i>Project</span>
+            <span class="mono"><i class="tag-sw c-leadership"></i>Leadership</span>
+            <span class="mono"><i class="tag-sw c-education"></i>Education</span>
+          </div>
         </div>
       </div>
-
-      <!-- Tachyon -->
-      <article class="project">
-        <p class="meta">Jul 2025 — Jun 2026<span class="sub">SEDS UNLV · IREC 2026</span></p>
-        <div class="project-media">
-          <figure class="main">
-            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVcO5oLbqIZnKpXjRnGGb4Pf36Bg6tT7PK68YcCgw1u7UE5EOYaNH0CUAUrWzj73uhOyYZPHFRG8NNiG-uPuPEOUCyhFcYRYb_n0SAPrv4VY62DUJRDRYen4huEQzzyzN96_OLs6L41CSX5_C89Q37_xmvgeI2hncw26ogIStUDoj43iVJpxcO7cEw6B94=w1280" alt="Tachyon avionics sled, assembled with dual altimeters and GPS tracker">
-          </figure>
-          <div class="thumbs">
-            <figure>
-              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQWMQYqvLi0GUusaKSDjJSNKNz7G-49ib1rMe1HByKi_n9Ga25QAY_0mWovpPsrsTcmCao-QFBrYdnfUIdQGYsf3cw0i8CCyYLYE-HOVsmo3R7JWvKFVqtmZkb4Vq3op_U387e8_j7DQxzz47TRnH2hfoNY0bfnmi2Kj0ednKZM0E4QZlPKBDsAzFFzbBhO7CU-E7h0lpayzv-kJOfKZ4FryA4Nw6FdsEtqA5C47qTs=w1280" alt="Tachyon avionics sled CAD model">
-              <figcaption>Avionics sled — SolidWorks</figcaption>
-            </figure>
-            <figure>
-              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXr3-ZSXN4atgJ6OpReDZxYL1Y8o-rqC5eexJj1NWl9odRZEgKQlK0XR_MUJZHvnNRbnhR08_Rhi9lwVo0Z8IGqgHc3SkLZkhEQurounmSde-uhTNLLjeUyZ13clTEKYenBtTYaDNtffsK6URwTxTSJVmB-vD32y28Z-4kXRe8thKoYlEr9IFf3iPoRQi4shWhfsusUlnuZ2W0GmjmI6YrvzidSHfr37c6yNu46Al8=w1280" alt="ANSYS static structural analysis of the aluminum bulkhead">
-              <figcaption>Bulkhead FEA — ANSYS</figcaption>
-            </figure>
-          </div>
-        </div>
-        <div class="project-body">
-          <h3>Tachyon — recovery subsystem lead</h3>
-          <p>
-            Redundant dual-deploy recovery system for UNLV's IREC 2026 entry, built to the DTEG
-            requirements. Led an 8+ member team through design, testing, integration, and
-            documentation, working across avionics, structures, and propulsion.
-          </p>
-          <p>
-            The avionics sled carries two independent dual-deploy altimeters and a Featherweight GPS
-            tracker, printed in ABS-GF for stiffness and heat resistance during summer launches. A
-            MATLAB shock-load calculator predicts parachute deployment loads and drives the
-            structural design; aluminum bulkheads were validated with ANSYS static FEA.
-          </p>
-          <dl class="project-specs">
-            <div><dt>Role</dt><dd>Recovery subsystem lead</dd></div>
-            <div><dt>Tools</dt><dd>SolidWorks, ANSYS, MATLAB</dd></div>
-            <div><dt>Architecture</dt><dd>Dual altimeters + GPS, dual deploy</dd></div>
-            <div><dt>Fabrication</dt><dd>ABS-GF print, machining, soldering</dd></div>
-          </dl>
-        </div>
-      </article>
-
-      <!-- Aramis -->
-      <article class="project">
-        <p class="meta">Dec 2024 — Jun 2025<span class="sub">SEDS UNLV · IREC 2025</span></p>
-        <div class="project-media">
-          <figure class="main">
-            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQUoxAz0XpqevyKDNJ2AGNZgm-RvkFYXvgRrCnBFqV9Iup4oT-q1X1gsfsZLXREjbAwrQZ6xeRriNOnC8LTGlvHwCTVXB9mjwF1bWtq7uVPro8XJ2VFmmR4gxSKrf0Ezj7dYuD8Xu7mIsFBgp5J-8C9IIWHoTpJof1Xolae7xwW5ZNWThKr0eFrlx6avpXE=w1280" alt="Aramis test flight">
-          </figure>
-          <div class="thumbs">
-            <figure>
-              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVhZtYSooT6Mp_0lxpCbRwxAyh0CBGICV7F7baxtUOhOpI70IDXLuPjEmp-meB6eLnBQHY_y5L0C3D31ttLLKBdiJGyrP2VwooM2IP2l5emjVt25saG8ux-eLVBFs78S68Bs1uL_RhlBAqfDT3cu3Iz754ra_6XaXDfasPN4QZJIb0xVYtYpuJIfAUKiIg=w1280" alt="Aramis avionics sled">
-              <figcaption>Avionics sled</figcaption>
-            </figure>
-            <figure class="light">
-              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXUsrE_o1ZIMnQOONSZm_b-IE9K-5-ouPdlxnW3LhJAillYHgjSmn_9d3VJrH-HnTfC8TSdnuMZoC668p7VjRL0v1bV91Jh36EUaBd13bJXRFdxLYnubwOfb1QpNMBDaj8_qgjNQkTXGgex3fEpfdf1Uq66xg1gXfqOFG573YJ3Zr_h8GkbZstkph8S3L2qIyIBp36oSTg9nGLD24O_gcgLRCZIAzW8INBDqA=w1280" alt="Aramis recovery wiring diagram">
-              <figcaption>Wiring diagram</figcaption>
-            </figure>
-          </div>
-        </div>
-        <div class="project-body">
-          <h3>Aramis — recovery subsystem engineer</h3>
-          <p>
-            Redesigned and 3D printed the recovery avionics sled, integrating an SRAD Eggtimer Quasar
-            with a COTS Altus Metrum TeleMetrum for independent apogee and main deployment circuits
-            plus live GPS telemetry.
-          </p>
-          <p>
-            Built an Excel black-powder charge calculator that predicted ejection forces within ±5%
-            of ground-test results, handled avionics integration and soldering, and ran OpenRocket
-            flight simulations. Aramis flew a nominal test flight, then a flawless competition flight.
-          </p>
-          <dl class="project-specs">
-            <div><dt>Role</dt><dd>Recovery subsystem engineer</dd></div>
-            <div><dt>Tools</dt><dd>SolidWorks, OpenRocket, Excel</dd></div>
-            <div><dt>Result</dt><dd>100% recovery score, IREC 2025</dd></div>
-            <div><dt>Division</dt><dd>10,000 ft COTS</dd></div>
-          </dl>
-        </div>
-      </article>
-
-      <!-- Vulcan -->
-      <article class="project">
-        <p class="meta">Oct 2024 — Mar 2025<span class="sub">Tripoli Level 1 certification</span></p>
-        <div class="project-media">
-          <figure class="main">
-            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQVFX47uqdHSyXcQKUp_I4ZtE71ofxjpSR6m3vLX2j10dpN0w_ZBv1rr7_-iLpFyi5wBMKBCK3Q6QsUGBLpterLgdo1RzBW_Qp9Mdl-U91qlUVAeC0P4WNF8hRC2aRF4ZJn6pw4cTACHxrxpme-iE9LVyiou_08TTNT3ngQe1fRHGONxCg8b41Bjlimd-OQ=w1280" alt="Vulcan on the launch rail">
-          </figure>
-          <div class="thumbs">
-            <figure class="light">
-              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXMHDXyhNJfXwaXftbFETrRhr2_NI-gRkKAt8lg7NW019FM64WZLgbKhK3PesBK6ttgAvwoR3zm55UhlvQwX1lifCnZlG52tf19LV0a6-bxXX8doDxcsYKWGhYLqGGz5IeNWZ3rjwmlzOX_KPET3ryW2jPz-4SmL-jE5lpKvOq32TVKPKeClpjQIoqJzlUZkN0mIarcidwBTsGG3p4MzP9zrGt-OQGzHxtox5eN5HQ=w1280" alt="Vulcan OpenRocket model">
-              <figcaption>OpenRocket model</figcaption>
-            </figure>
-            <figure>
-              <a href="https://www.youtube.com/watch?v=4QGgb7rxjw4" target="_blank" rel="noopener" style="display:grid;place-items:center;height:100%;color:var(--text-2);font-size:13px;text-align:center;padding:12px;">Launch video ↗</a>
-            </figure>
-          </div>
-        </div>
-        <div class="project-body">
-          <h3>Vulcan — Level 1 high-power rocket</h3>
-          <p>
-            Designed, built, and flew a 50-inch high-power rocket to earn Tripoli Rocketry
-            Association Level 1 certification. Simulated in OpenRocket for stability margin, motor
-            selection, apogee, and deployment timing before any parts were cut.
-          </p>
-          <p>
-            Fins were drafted in AutoCAD, laser-cut from plywood, and epoxied to the airframe.
-            Launched March 15, 2025 at a Tripoli-certified event with a nominal flight and
-            negligible damage on recovery.
-          </p>
-          <dl class="project-specs">
-            <div><dt>Length</dt><dd>50 in</dd></div>
-            <div><dt>Apogee</dt><dd>~2,500 ft</dd></div>
-            <div><dt>Stability</dt><dd>1.97 cal</dd></div>
-            <div><dt>Result</dt><dd>Certified, Mar 2025</dd></div>
-          </dl>
-        </div>
-      </article>
-
-      <!-- Ski mount -->
-      <article class="project">
-        <p class="meta">Personal project<span class="sub">Ongoing</span></p>
-        <div class="project-media">
-          <figure class="main">
-            <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQXh75LkKKkleHiWA-7KcxkdJ4vtu0nywbn3laB8MoeBkR77hhagItOyeaQ6yYHDqsAG_MgfKk3UCjTzEKDe8Y7cpSNjUuGucQ8H3o6AQ5bq7j7rVci2DgJkKsxB6QIT3ZDXcANKt4U9D_vIXq8oz_6_C2k6hEzLJt32_lIwGvAHaerZmH72bUsCsKzPn80lfwjNe_W_pdyq4uINe0HC-ZaiPOcb845EGKNY_N5GS9g=w1280" alt="Vertical ski wall mount prototype">
-          </figure>
-        </div>
-        <div class="project-body">
-          <h3>Vertical ski wall mount</h3>
-          <p>
-            A custom mount that stores and displays skis in a compact footprint. Started for my own
-            skis and expanded to a small run for friends.
-          </p>
-          <p>
-            Current prototypes are 3D printed in PLA to iterate on geometry, fit, and load paths,
-            with a planned move to an engineering-grade filament or additively manufactured aluminum
-            for long-term durability.
-          </p>
-          <dl class="project-specs">
-            <div><dt>Stage</dt><dd>Prototype iteration</dd></div>
-            <div><dt>Material</dt><dd>PLA → engineering filament / Al</dd></div>
-          </dl>
-        </div>
-      </article>
+      <div id="tlGroups"></div>
     </div>
   </section>
 
-  <!-- ============================================================
-       EXPERIENCE
-       ============================================================ -->
-  <section class="section" id="experience">
+  <section class="section" id="tools">
     <div class="wrap">
-      <div class="section-head">
-        <p class="meta">Experience</p>
-        <div><h2>Where I've worked</h2></div>
+      <div class="s-head">
+        <span class="mono dim">Tools</span>
+        <h2>Tools and methods</h2>
       </div>
-
-      <ol class="timeline">
-        <li>
-          <div class="idx"><span class="meta">01</span><b>May 2026 — Aug 2026</b></div>
-          <div>
-            <h3>Anduril Industries</h3>
-            <p class="role">Electro-Mechanical Engineering Intern</p>
-          </div>
-          <ul class="detail">
-            <li>Redesigned a structural weldment riser supporting an electronic warfare platform in Siemens NX — drawings, ANSYS static FEA, and bolted-joint validation under wind loading. Standardized component sizing for a 54% cost reduction and 37 fewer hardware parts per unit.</li>
-            <li>Designed and built a modular sheet-metal bring-up station that turned a production assembly into a benchtop test fixture, routing RF and board-level interfaces to external access points for flashing, debug, and validation.</li>
-            <li>Owned mechanical development of a rugged handheld remote display unit from system requirements through detailed design: displays, buttons, gaskets, connectors, and internal electronics, in collaboration with electrical and software teams.</li>
-            <li>Designed sheet-metal enclosures for a laboratory RF test system, improving packaging, cable management, and serviceability.</li>
-          </ul>
-        </li>
-
-        <li>
-          <div class="idx"><span class="meta">02</span><b>May 2025 — Aug 2025</b></div>
-          <div>
-            <h3>Mako Advanced Materials</h3>
-            <p class="role">Engineering Intern</p>
-            <div class="exp-img">
-              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQUK5KLUd_8XeBQq8yzXJeGc4Ve9DzQS-_W-DQtfSFIeTZilOBGKmUTB-GAy4B_YzUkO8U6FN0KbrmxzEG6RfYQ7cWX1sDmbgV0Cw9YVl95UUHYofDxKqk1gxyd9c_MbjCIPaRGEA7ws54EFFW0ikoX3fPlL2whN9vV7LQmQblRHDFky_3HDYUZSPFmHBaAQPN1dBhh4tM24Q4p_iOCZU4QxEbuBFHX3kF37i8Qd=w1280" alt="Composite test specimens and custom test fixtures at Mako Advanced Materials">
-            </div>
-          </div>
-          <ul class="detail">
-            <li>Ran ASTM materials testing on aerospace and MIL-spec composites — lap shear, 3-point bend, short beam shear, DMA — on a Tinius Olsen frame with Horizon software.</li>
-            <li>Performed prepreg quality control (flow, areal weight, resin consistency, ply thickness), logging 5–10 samples weekly to support certifications on 1–2 week lead times.</li>
-            <li>Prepared wet and prepreg layups for R&amp;D, producing 25–50 CNC-milled specimens weekly to UL94, FAR, and FAA specifications; modeled specimens in Fusion 360.</li>
-            <li>Upgraded gel timers, test frames, and flame test chambers with 3D-printed fixtures designed in Onshape.</li>
-          </ul>
-        </li>
-
-        <li>
-          <div class="idx"><span class="meta">03</span><b>Feb 2026 — May 2026</b></div>
-          <div>
-            <h3>SEDS UNLV</h3>
-            <p class="role">Secretary</p>
-            <p class="loc">Students for the Exploration and Development of Space</p>
-          </div>
-          <ul class="detail">
-            <li>Directed administrative operations for a 250+ member aerospace student organization.</li>
-            <li>Secured $18,000+ in new sponsorship funding.</li>
-          </ul>
-        </li>
-
-        <li>
-          <div class="idx"><span class="meta">04</span><b>Apr 2025 — May 2025</b></div>
-          <div>
-            <h3>UNLV Office of Economic Development</h3>
-            <p class="role">Makerspace Creator Intern</p>
-            <div class="exp-img">
-              <img src="https://lh3.googleusercontent.com/sitesv/AG8ngQX74nfCSee20zlorLJkNORs-PSP46X6sPXxTvmnW45dx_j9FcOhsrlONCinv_2ohX4vGULz09l5BzjIWl5XBERI3YNoXZACa-qEVzhkYYq-3kZzrRwxYlXXKnbAL8VEzXtGB69aLvmY8ZOLi_fHrtqnTkmD7JJeewtXzwUaRt6NB5Sk4EIV2q9uQxleCVxj3w-7CVy93_U9u4RIzi7KPijpQdCGnKXvOviH9Ur-=w1280" alt="Scale furniture prototypes fabricated at the UNLV makerspace">
-            </div>
-          </div>
-          <ul class="detail">
-            <li>Engineered and fabricated 1/8-scale plywood and 1/32-scale 3D-printed furniture prototypes for special-needs children in under a week using AutoCAD, LightBurn laser cutting, CNC milling, and 3D printing.</li>
-            <li>Developed visual design concepts for design validation, public outreach, and fundraising.</li>
-          </ul>
-        </li>
-
-        <li>
-          <div class="idx"><span class="meta">05</span><b>Apr 2024 — Jul 2024</b></div>
-          <div>
-            <h3>Marnell Companies</h3>
-            <p class="role">Architectural Intern</p>
-          </div>
-          <ul class="detail">
-            <li>Built full-scale exterior 2D and 3D Revit models of Harvey's Lake Tahoe Hotel and Casino from LiDAR scans, AutoCAD drawings, and architectural plans to baseline a 1.6 million sq ft renovation.</li>
-            <li>Identified and corrected undocumented remodels and misaligned structural elements in the models.</li>
-          </ul>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       CAPABILITIES
-       ============================================================ -->
-  <section class="section" id="capabilities">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="meta">Capabilities</p>
-        <div><h2>Tools and methods</h2></div>
-      </div>
-
-      <div class="cap-grid">
-        <div class="cap">
-          <h3>Design</h3>
-          <ul>
-            <li>Siemens NX, SolidWorks</li>
-            <li>Fusion 360, Onshape, AutoCAD, Revit</li>
-            <li>Manufacturing drawings</li>
-            <li>Sheet metal and weldment design</li>
-            <li>DFM for printing, machining, composites</li>
-          </ul>
-        </div>
-        <div class="cap">
-          <h3>Analysis</h3>
-          <ul>
-            <li>ANSYS static structural FEA</li>
-            <li>Bolted-joint and wind-load validation</li>
-            <li>MATLAB (shock-load modeling)</li>
-            <li>OpenRocket flight simulation</li>
-            <li>Excel engineering calculators</li>
-          </ul>
-        </div>
-        <div class="cap">
-          <h3>Fabrication</h3>
-          <ul>
-            <li>3D printing — ABS-GF, PETG, PLA</li>
-            <li>CNC milling, laser cutting</li>
-            <li>Wet and prepreg composite layup</li>
-            <li>Soldering, epoxy bonding</li>
-            <li>Avionics integration</li>
-          </ul>
-        </div>
-        <div class="cap">
-          <h3>Test &amp; documentation</h3>
-          <ul>
-            <li>ASTM composite testing, DMA</li>
-            <li>Tinius Olsen / Horizon</li>
-            <li>Ejection charge ground testing</li>
-            <li>Flight telemetry analysis</li>
-            <li>BOMs, progress reports, config control</li>
-          </ul>
-        </div>
+      <div class="tools">
+        <div><h3>Design <span class="mono dim">A</span></h3><ul>
+          <li>Siemens NX, SolidWorks</li><li>Fusion 360, Onshape</li><li>AutoCAD, Revit</li><li>Sheet metal &amp; weldments</li><li>Manufacturing drawings</li></ul></div>
+        <div><h3>Analysis <span class="mono dim">B</span></h3><ul>
+          <li>ANSYS static structural</li><li>Bolted-joint validation</li><li>MATLAB</li><li>OpenRocket</li><li>Excel engineering calculators</li></ul></div>
+        <div><h3>Fabrication <span class="mono dim">C</span></h3><ul>
+          <li>3D printing — PETG, ABS-GF, PLA</li><li>CNC milling, laser cutting</li><li>Wet &amp; prepreg layup</li><li>Soldering, epoxy bonding</li><li>Avionics integration</li></ul></div>
+        <div><h3>Test <span class="mono dim">D</span></h3><ul>
+          <li>ASTM composite testing, DMA</li><li>Tinius Olsen / Horizon</li><li>Ejection-charge ground tests</li><li>Flight telemetry analysis</li><li>BOMs &amp; configuration control</li></ul></div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       CONTACT
-       ============================================================ -->
-  <section class="contact" id="contact">
+  <section class="section contact" id="contact">
     <div class="wrap">
       <h2>Looking for a Summer 2027 mechanical engineering internship.</h2>
-      <div class="contact-row">
-        <p class="meta">Contact</p>
+      <div class="contact-grid">
+        <span class="mono dim">Contact</span>
         <div>
-          <a href="mailto:tothd3@unlv.nevada.edu">tothd3@unlv.nevada.edu</a>
-          <a href="mailto:dominiktoth28@gmail.com">dominiktoth28@gmail.com</a>
-          <a href="tel:+17023515821">(702) 351-5821</a>
+          <a href="mailto:tothd3@unlv.nevada.edu">tothd3@unlv.nevada.edu <span class="mono">Email</span></a>
+          <a href="mailto:dominiktoth28@gmail.com">dominiktoth28@gmail.com <span class="mono">Email</span></a>
+          <a href="tel:+17023515821">(702) 351-5821 <span class="mono">Phone</span></a>
         </div>
         <div>
-          <a href="https://www.linkedin.com/in/dominiktoth1/" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="Dominik_Toth_Resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+          <a href="https://www.linkedin.com/in/dominiktoth1/" target="_blank" rel="noopener">LinkedIn <span class="mono">↗</span></a>
+          <a href="Dominik_Toth_Resume.pdf" target="_blank" rel="noopener">Résumé <span class="mono">PDF</span></a>
         </div>
       </div>
     </div>
   </section>
-
 </main>
+
+<!-- ======================================================================
+     DETAIL VIEW (filled by script)
+     ====================================================================== -->
+<main id="detail" class="detail" hidden></main>
 
 <footer>
   <div class="wrap">
-    <span class="meta">© 2026 Dominik Toth</span>
-    <span class="meta">Las Vegas, Nevada</span>
+    <span class="mono dim">© 2026 Dominik Toth</span>
+    <span class="mono dim">Las Vegas, Nevada</span>
   </div>
 </footer>
 
 <script>
-  const nav = document.getElementById('nav');
-  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+/* ==========================================================================
+   CONTENT
+   Edit entries here. Order within each group = newest first.
+   cat: "work" | "project" | "leadership" | "education"
+   ========================================================================== */
+const IMG = "https://lh3.googleusercontent.com/sitesv/";
 
-  const toggle = document.getElementById('navToggle');
-  const links = document.getElementById('navLinks');
-  toggle.addEventListener('click', () => {
-    const open = links.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.textContent = open ? 'Close' : 'Menu';
+const ENTRIES = [
+  {
+    id: "senior-design", code: "DT-11", group: "Now", cat: "project",
+    title: "Rocket-Deployed UAV",
+    org: "UNLV Senior Design", role: "Launch vehicle & integration",
+    start: "Sep 2026", end: "Present",
+    summary: "A solid-motor rocket that carries a folding-wing, fixed-wing UAV to altitude and releases it.",
+    stats: [{ v: "Phase 1", l: "Preliminary design: vehicle configuration and deployment concepts" }],
+    specs: [["Phase", "Preliminary design"], ["Vehicles", "Solid-motor rocket + fixed-wing UAV"], ["Tools", "CAD, OpenRocket"], ["Status", "In progress"]],
+    body: [
+      "My senior design capstone sits where rocketry meets aircraft design. The UAV has to survive boost packed inside the airframe, then separate, unfold its wings, and fly.",
+      "Work so far covers the preliminary vehicle configuration, the deployment mechanism, and the requirements that tie the rocket and aircraft together."
+    ],
+    bullets: [
+      "Developed preliminary CAD models and OpenRocket simulations for the launch vehicle and deployable UAV, evaluating packaging constraints, vehicle configuration, flight stability, and rocket-aircraft integration.",
+      "Investigated folding-wing deployment concepts and mechanical coupling methods for securing and releasing the UAV.",
+      "Defined preliminary mechanical and avionics integration requirements: flight-computer packaging, deployment interfaces, control-surface configuration for flight and roll stability, and overall subsystem layout."
+    ],
+    images: []
+  },
+  {
+    id: "ski-mount", code: "DT-10", group: "Now", cat: "project",
+    title: "Vertical Ski Wall Mount",
+    org: "Personal project", role: "Design & fabrication",
+    start: "Ongoing", end: "",
+    summary: "A compact wall mount that stores and displays skis — started for mine, now a small run for friends.",
+    stats: [],
+    specs: [["Stage", "Prototype iteration"], ["Current material", "PLA (3D printed)"], ["Next", "Engineering filament or AM aluminum"]],
+    body: [
+      "As an avid skier I wanted a mount that shows off my skis while keeping them easy to grab. The design quickly grew to include mounts for friends.",
+      "Prototypes are 3D printed in PLA to refine geometry, fit, and load paths, with a planned move to an engineering-grade filament or additively manufactured aluminum for strength and long-term durability."
+    ],
+    bullets: [],
+    images: [{ src: IMG + "AG8ngQXh75LkKKkleHiWA-7KcxkdJ4vtu0nywbn3laB8MoeBkR77hhagItOyeaQ6yYHDqsAG_MgfKk3UCjTzEKDe8Y7cpSNjUuGucQ8H3o6AQ5bq7j7rVci2DgJkKsxB6QIT3ZDXcANKt4U9D_vIXq8oz_6_C2k6hEzLJt32_lIwGvAHaerZmH72bUsCsKzPn80lfwjNe_W_pdyq4uINe0HC-ZaiPOcb845EGKNY_N5GS9g=w1280", cap: "Ski mount prototype" }]
+  },
+  {
+    id: "anduril", code: "DT-09", group: "2026", cat: "work",
+    title: "Anduril Industries",
+    org: "Anduril Industries", role: "Electro-Mechanical Engineering Intern",
+    start: "May 2026", end: "Aug 2026",
+    summary: "Structural, test-fixture, and enclosure design for electronic warfare and RF hardware.",
+    stats: [{ v: "54%", l: "Cost reduction on a redesigned structural riser assembly" }, { v: "−37", l: "Hardware components eliminated per unit" }],
+    specs: [["CAD", "Siemens NX"], ["Analysis", "ANSYS static FEA"], ["Processes", "Weldments, sheet metal"], ["Collaborators", "Electrical & software teams"]],
+    body: [
+      "A summer on the electro-mechanical team, owning hardware from requirements through manufacturing drawings: a structural weldment, a production test fixture, lab enclosures, and a rugged handheld unit."
+    ],
+    bullets: [
+      "Redesigned a structural weldment riser assembly supporting an electronic warfare platform in Siemens NX — manufacturing drawings, ANSYS static FEA, and bolted-joint validation under wind-induced loading. Standardized component sizing to cut cost 54% and eliminate 37 hardware components per unit.",
+      "Designed and built a modular sheet-metal bring-up station that converted a production electro-mechanical assembly into a benchtop test fixture, routing RF and board-level interfaces to external access points for flashing, configuration, debugging, and validation before final assembly.",
+      "Owned mechanical development of a rugged handheld remote display unit from system-level requirements through detailed design — displays, buttons, gaskets, connectors, and internal electronics — balancing functionality, environmental durability, and manufacturability.",
+      "Designed sheet-metal panel enclosures for a laboratory RF test system, improving packaging, cable management, serviceability, and access during assembly and test."
+    ],
+    images: []
+  },
+  {
+    id: "seds-secretary", code: "DT-08", group: "2026", cat: "leadership",
+    title: "SEDS UNLV — Secretary",
+    org: "Students for the Exploration and Development of Space", role: "Secretary",
+    start: "Feb 2026", end: "May 2026",
+    summary: "Ran administration for a 250+ member aerospace student organization and brought in new sponsors.",
+    stats: [{ v: "$18k+", l: "New sponsorship funding secured" }, { v: "250+", l: "Members in the organization" }],
+    specs: [["Organization", "SEDS UNLV"], ["Members", "250+"], ["Focus", "Operations & sponsorship"]],
+    body: [
+      "SEDS UNLV is the university's chapter of Students for the Exploration and Development of Space, and competes each year in the International Rocket Engineering Competition. Alongside my technical role on the recovery team, I served on the officer board."
+    ],
+    bullets: [
+      "Directed administrative operations for a 250+ member aerospace student organization.",
+      "Secured more than $18,000 in new sponsorship funding."
+    ],
+    images: []
+  },
+  {
+    id: "tachyon", code: "DT-07", group: "2025", cat: "project",
+    title: "Tachyon",
+    org: "SEDS UNLV · IREC 2026", role: "Recovery Subsystem Lead",
+    start: "Jul 2025", end: "Jun 2026",
+    summary: "Led an 8+ person team designing a redundant dual-deploy recovery system for UNLV's IREC 2026 rocket.",
+    stats: [{ v: "8+", l: "Engineers on the recovery subsystem team" }],
+    specs: [["Team", "8+ engineers"], ["CAD", "SolidWorks"], ["Analysis", "ANSYS FEA, MATLAB"], ["Avionics", "Dual altimeters + Featherweight GPS"], ["Requirements", "IREC 2026 DTEG"]],
+    body: [
+      "Tachyon uses a redundant dual-deploy architecture for safe, damage-free recovery. I led system design, testing, integration, and documentation, working closely with the avionics, structures, and propulsion teams and building on the prior year's 100% recovery score.",
+      "The avionics sled carries two independent dual-deploy altimeters so a single-point failure can't prevent deployment, plus a Featherweight GPS tracker for post-landing recovery. Every component can be accessed or swapped without tearing down the bay, and an integrated screw-switch port gives safe power control once the sled is installed."
+    ],
+    bullets: [
+      "Spearheaded the modular avionics sled supporting dual flight computers and GPS, designed in SolidWorks and 3D printed to withstand high-vibration and thermal environments.",
+      "Developed a MATLAB shock-load calculator to predict parachute deployment loads and drive structural design decisions.",
+      "Performed ANSYS static FEA on machined aluminum bulkheads to check stress, deformation, and factor of safety under worst-case separation loads.",
+      "Produced the avionics block diagram used in progress reports and design reviews.",
+      "Managed subsystem documentation, BOMs, and progress reports to maintain flight readiness and configuration control."
+    ],
+    images: [
+      { src: IMG + "AG8ngQVcO5oLbqIZnKpXjRnGGb4Pf36Bg6tT7PK68YcCgw1u7UE5EOYaNH0CUAUrWzj73uhOyYZPHFRG8NNiG-uPuPEOUCyhFcYRYb_n0SAPrv4VY62DUJRDRYen4huEQzzyzN96_OLs6L41CSX5_C89Q37_xmvgeI2hncw26ogIStUDoj43iVJpxcO7cEw6B94=w1280", cap: "Avionics sled, built — dual altimeters, GPS tracker, screw-switch port" },
+      { src: IMG + "AG8ngQWMQYqvLi0GUusaKSDjJSNKNz7G-49ib1rMe1HByKi_n9Ga25QAY_0mWovpPsrsTcmCao-QFBrYdnfUIdQGYsf3cw0i8CCyYLYE-HOVsmo3R7JWvKFVqtmZkb4Vq3op_U387e8_j7DQxzz47TRnH2hfoNY0bfnmi2Kj0ednKZM0E4QZlPKBDsAzFFzbBhO7CU-E7h0lpayzv-kJOfKZ4FryA4Nw6FdsEtqA5C47qTs=w1280", cap: "Avionics sled CAD — SolidWorks" },
+      { src: IMG + "AG8ngQXr3-ZSXN4atgJ6OpReDZxYL1Y8o-rqC5eexJj1NWl9odRZEgKQlK0XR_MUJZHvnNRbnhR08_Rhi9lwVo0Z8IGqgHc3SkLZkhEQurounmSde-uhTNLLjeUyZ13clTEKYenBtTYaDNtffsK6URwTxTSJVmB-vD32y28Z-4kXRe8thKoYlEr9IFf3iPoRQi4shWhfsusUlnuZ2W0GmjmI6YrvzidSHfr37c6yNu46Al8=w1280", cap: "Bulkhead static structural analysis — ANSYS" },
+      { src: IMG + "AG8ngQXacZqZBgfzkFS19eqRHak1c9onkyEHqBnrFZr1-sR5XJxE65u6n3vOrH6iGpxvnPwCsDRE7glylNMvgMXNEyD0V81Tf7KFnHxT2utL0CkXqnEIHlWDtNKr1z5WbpGm18G8GOTB5L7OrF1ZgjFFJq0rbihhHSN6EuvLA23rxf4QpPCw8wK9aH-ZLaUYv4CCb7JgVYIapRufQ_cudvLwXOM4UbhE1ImbNGd1gBFfVNs=w1280", cap: "Avionics bay electronics block diagram", light: true }
+    ]
+  },
+  {
+    id: "mako", code: "DT-06", group: "2025", cat: "work",
+    title: "Mako Advanced Materials",
+    org: "Mako Advanced Materials", role: "Engineering Intern",
+    start: "May 2025", end: "Aug 2025",
+    summary: "ASTM testing, prepreg quality control, and specimen production for aerospace and MIL-spec composites.",
+    stats: [{ v: "25–50", l: "Composite test specimens produced per week" }, { v: "1–2 wk", l: "Certification lead times supported by QC data" }],
+    specs: [["Test frame", "Tinius Olsen + Horizon"], ["Standards", "ASTM, UL94, FAR, FAA"], ["CAD", "Fusion 360, Onshape"], ["Materials", "Aerospace & MIL-spec composites"]],
+    body: [
+      "Hands-on work in a composites lab: running mechanical tests, checking incoming prepreg, building specimens, and improving the lab's own test equipment."
+    ],
+    bullets: [
+      "Conducted ASTM materials testing on aerospace and MIL-spec composites — lap shear, 3-point bend, short beam shear, and DMA — on a Tinius Olsen test frame with Horizon software.",
+      "Performed prepreg quality control through flow, areal weight, resin consistency, and ply thickness testing; logged 5–10 samples weekly to support material certifications on 1–2 week lead times.",
+      "Prepared wet and prepreg layups for material R&amp;D, producing 25–50 specimens weekly, modeled in Fusion 360 and CNC milled to UL94, FAR, and FAA test specifications.",
+      "Formulated flame-retardant resin systems, tuning chemical ratios and cure cycles; supported FAA 12- and 60-second burn certification of new materials.",
+      "Upgraded gel timers, mechanical test frames, and flame test chambers with 3D-printed parts designed in Onshape."
+    ],
+    images: [{ src: IMG + "AG8ngQUK5KLUd_8XeBQq8yzXJeGc4Ve9DzQS-_W-DQtfSFIeTZilOBGKmUTB-GAy4B_YzUkO8U6FN0KbrmxzEG6RfYQ7cWX1sDmbgV0Cw9YVl95UUHYofDxKqk1gxyd9c_MbjCIPaRGEA7ws54EFFW0ikoX3fPlL2whN9vV7LQmQblRHDFky_3HDYUZSPFmHBaAQPN1dBhh4tM24Q4p_iOCZU4QxEbuBFHX3kF37i8Qd=w1280", cap: "Prepreg, CNC-milled specimens, and custom 3D-printed test fixtures" }]
+  },
+  {
+    id: "makerspace", code: "DT-05", group: "2025", cat: "work",
+    title: "UNLV Makerspace",
+    org: "UNLV Office of Economic Development", role: "Makerspace Creator Intern",
+    start: "Apr 2025", end: "May 2025",
+    summary: "Rapid scale prototypes of furniture designed for children with special needs.",
+    stats: [{ v: "< 1 wk", l: "From concept to finished scale prototypes" }],
+    specs: [["Scales", "1/8 plywood, 1/32 printed"], ["Tools", "AutoCAD, LightBurn"], ["Processes", "Laser cutting, CNC, 3D printing"]],
+    body: [
+      "A short, fast project: turning furniture concepts for special-needs children into physical scale models that could be evaluated, shown to the public, and used for fundraising."
+    ],
+    bullets: [
+      "Engineered and fabricated 1/8-scale plywood and 1/32-scale 3D-printed furniture prototypes in under one week using AutoCAD, LightBurn laser cutting, CNC milling, and 3D printing.",
+      "Developed visual design concepts to support design validation, public outreach, and fundraising."
+    ],
+    images: [{ src: IMG + "AG8ngQX74nfCSee20zlorLJkNORs-PSP46X6sPXxTvmnW45dx_j9FcOhsrlONCinv_2ohX4vGULz09l5BzjIWl5XBERI3YNoXZACa-qEVzhkYYq-3kZzrRwxYlXXKnbAL8VEzXtGB69aLvmY8ZOLi_fHrtqnTkmD7JJeewtXzwUaRt6NB5Sk4EIV2q9uQxleCVxj3w-7CVy93_U9u4RIzi7KPijpQdCGnKXvOviH9Ur-=w1280", cap: "Scale furniture prototypes" }]
+  },
+  {
+    id: "aramis", code: "DT-04", group: "2024", cat: "project",
+    title: "Aramis",
+    org: "SEDS UNLV · IREC 2025", role: "Recovery Subsystem Engineer",
+    start: "Dec 2024", end: "Jun 2025",
+    summary: "Redesigned the recovery avionics sled for a rocket that flew flawlessly at IREC 2025.",
+    stats: [{ v: "100%", l: "Recovery score — 10,000 ft COTS division, IREC 2025" }, { v: "±5%", l: "Ejection-charge prediction vs. ground test" }],
+    specs: [["Division", "10,000 ft COTS"], ["CAD", "SolidWorks"], ["Simulation", "OpenRocket"], ["Avionics", "Eggtimer Quasar + TeleMetrum"], ["Requirements", "IREC 2025 DTEG"]],
+    body: [
+      "Aramis used a redundant dual-deploy architecture pairing an SRAD Eggtimer Quasar with a COTS Altus Metrum TeleMetrum, giving independent apogee and main deployment circuits plus live GPS and telemetry.",
+      "A pre-competition test flight deployed both parachutes nominally and validated timing and integration. At IREC 2025 the vehicle flew flawlessly and earned a 100% recovery score."
+    ],
+    bullets: [
+      "Redesigned the recovery avionics sled in SolidWorks and fabricated it by 3D printing; integrated dual altimeters and a camera.",
+      "Built an Excel black-powder charge calculator that predicted ejection forces within ±5% of experimental results.",
+      "Handled avionics integration and soldering, and ran OpenRocket flight simulations for dual-deploy performance.",
+      "Analyzed test-flight telemetry to evaluate parachute deployment, ejection timing, and overall flight performance."
+    ],
+    images: [
+      { src: IMG + "AG8ngQUoxAz0XpqevyKDNJ2AGNZgm-RvkFYXvgRrCnBFqV9Iup4oT-q1X1gsfsZLXREjbAwrQZ6xeRriNOnC8LTGlvHwCTVXB9mjwF1bWtq7uVPro8XJ2VFmmR4gxSKrf0Ezj7dYuD8Xu7mIsFBgp5J-8C9IIWHoTpJof1Xolae7xwW5ZNWThKr0eFrlx6avpXE=w1280", cap: "Pre-competition test flight" },
+      { src: IMG + "AG8ngQVhZtYSooT6Mp_0lxpCbRwxAyh0CBGICV7F7baxtUOhOpI70IDXLuPjEmp-meB6eLnBQHY_y5L0C3D31ttLLKBdiJGyrP2VwooM2IP2l5emjVt25saG8ux-eLVBFs78S68Bs1uL_RhlBAqfDT3cu3Iz754ra_6XaXDfasPN4QZJIb0xVYtYpuJIfAUKiIg=w1280", cap: "Recovery avionics sled" },
+      { src: IMG + "AG8ngQXUsrE_o1ZIMnQOONSZm_b-IE9K-5-ouPdlxnW3LhJAillYHgjSmn_9d3VJrH-HnTfC8TSdnuMZoC668p7VjRL0v1bV91Jh36EUaBd13bJXRFdxLYnubwOfb1QpNMBDaj8_qgjNQkTXGgex3fEpfdf1Uq66xg1gXfqOFG573YJ3Zr_h8GkbZstkph8S3L2qIyIBp36oSTg9nGLD24O_gcgLRCZIAzW8INBDqA=w1280", cap: "Dual-deploy wiring diagram", light: true }
+    ]
+  },
+  {
+    id: "vulcan", code: "DT-03", group: "2024", cat: "project",
+    title: "Vulcan",
+    org: "Tripoli Rocketry Association", role: "Level 1 certification rocket",
+    start: "Oct 2024", end: "Mar 2025",
+    summary: "Designed, built, and flew a 50-inch high-power rocket to earn Tripoli Level 1 certification.",
+    stats: [{ v: "2,500 ft", l: "Approximate apogee" }, { v: "1.97 cal", l: "Stability margin" }],
+    specs: [["Length", "50 in"], ["Apogee", "~2,500 ft"], ["Stability", "1.97 cal"], ["Launched", "March 15, 2025"], ["Tools", "OpenRocket, AutoCAD, laser cutter"]],
+    body: [
+      "Vulcan took rocketry fundamentals all the way to a flight-ready vehicle. It was modeled and simulated in OpenRocket to check stability margin, motor selection, mass distribution, apogee, and deployment timing before anything was fabricated.",
+      "It launched on March 15, 2025 at a Tripoli-certified event, flew nominally, recovered with negligible damage, and passed inspection for Level 1 certification."
+    ],
+    bullets: [
+      "Designed a 50-inch, 1.97-caliber-stable rocket in OpenRocket and calculated aerodynamic parameters for the target flight.",
+      "Drafted fins in AutoCAD, laser-cut them from plywood, and epoxied them to the airframe.",
+      "Collected and reviewed flight data to verify design integrity."
+    ],
+    links: [{ label: "Watch the launch ↗", href: "https://www.youtube.com/watch?v=4QGgb7rxjw4" }],
+    images: [
+      { src: IMG + "AG8ngQVFX47uqdHSyXcQKUp_I4ZtE71ofxjpSR6m3vLX2j10dpN0w_ZBv1rr7_-iLpFyi5wBMKBCK3Q6QsUGBLpterLgdo1RzBW_Qp9Mdl-U91qlUVAeC0P4WNF8hRC2aRF4ZJn6pw4cTACHxrxpme-iE9LVyiou_08TTNT3ngQe1fRHGONxCg8b41Bjlimd-OQ=w1280", cap: "Vulcan on the launch rail" },
+      { src: IMG + "AG8ngQXMHDXyhNJfXwaXftbFETrRhr2_NI-gRkKAt8lg7NW019FM64WZLgbKhK3PesBK6ttgAvwoR3zm55UhlvQwX1lifCnZlG52tf19LV0a6-bxXX8doDxcsYKWGhYLqGGz5IeNWZ3rjwmlzOX_KPET3ryW2jPz-4SmL-jE5lpKvOq32TVKPKeClpjQIoqJzlUZkN0mIarcidwBTsGG3p4MzP9zrGt-OQGzHxtox5eN5HQ=w1280", cap: "OpenRocket model", light: true }
+    ]
+  },
+  {
+    id: "marnell", code: "DT-02", group: "2024", cat: "work",
+    title: "Marnell Companies",
+    org: "Marnell Companies", role: "Architectural Intern",
+    start: "Apr 2024", end: "Jul 2024",
+    summary: "Built the baseline Revit model for a 1.6 million sq ft resort renovation.",
+    stats: [{ v: "1.6M", l: "Square feet in the renovation the model baselined" }],
+    specs: [["Project", "Harvey's Lake Tahoe"], ["Tools", "Revit, AutoCAD"], ["Inputs", "LiDAR scans, plans, drawings"]],
+    body: [
+      "My first internship: reconciling decades of drawings, scans, and undocumented changes into a single accurate model that a full renovation and rebrand could be planned from."
+    ],
+    bullets: [
+      "Developed full-scale exterior 2D and 3D Revit models of Harvey's Lake Tahoe Hotel and Casino from LiDAR scans, AutoCAD drawings, and architectural plans.",
+      "Identified and corrected design discrepancies, including undocumented remodels and misaligned structural elements, keeping the 1.6 million sq ft model aligned and consistent."
+    ],
+    images: []
+  },
+  {
+    id: "unlv", code: "DT-01", group: "2023", cat: "education",
+    title: "University of Nevada, Las Vegas",
+    org: "UNLV", role: "B.S. Mechanical Engineering",
+    start: "Aug 2023", end: "May 2027",
+    summary: "Mechanical engineering, with most hours outside class spent building rockets with SEDS UNLV.",
+    stats: [{ v: "3.74", l: "Cumulative GPA" }],
+    specs: [["Degree", "B.S. Mechanical Engineering"], ["Expected", "May 2027"], ["GPA", "3.74"], ["Certification", "Tripoli Level 1"]],
+    body: [
+      "Fourth-year mechanical engineering student. Beyond coursework, UNLV is where I joined SEDS, moved from recovery engineer to subsystem lead, earned my Tripoli Level 1, and started the rocket-deployed UAV senior design project."
+    ],
+    bullets: [],
+    images: []
+  }
+];
+
+const GROUPS = [
+  { key: "Now",  note: "In progress" },
+  { key: "2026", note: "" },
+  { key: "2025", note: "" },
+  { key: "2024", note: "" },
+  { key: "2023", note: "Start" }
+];
+const CATS = { work: "Work", project: "Project", leadership: "Leadership", education: "Education" };
+
+/* ==========================================================================
+   RENDER — timeline
+   ========================================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const dates = e => e.end ? `${e.start}<br><span class="dim">— ${e.end}</span>` : e.start;
+
+function mediaHTML(e, big = false) {
+  const img = e.images && e.images[0];
+  if (img) {
+    return `<div class="frame${img.light ? " light" : ""}"><img src="${img.src}" alt="${img.cap}" loading="lazy" referrerpolicy="no-referrer"></div>`;
+  }
+  const s = e.stats && e.stats[0];
+  return `<div class="plate">
+    <span class="mono ph">${e.code} / ${CATS[e.cat]}</span>
+    <div><div class="pv">${s ? s.v : e.code}</div><div class="pl">${s ? s.l : e.role}</div></div>
+    <span class="ticks"></span>
+  </div>`;
+}
+
+function renderTimeline() {
+  $("#entryCount").textContent = `${ENTRIES.length} entries`;
+  $("#tlGroups").innerHTML = GROUPS.map(g => {
+    const items = ENTRIES.filter(e => e.group === g.key);
+    if (!items.length) return "";
+    return `<section class="group${g.key === "Now" ? " now" : ""}">
+      <div class="group-label">${g.key}${g.note ? `<small>${g.note}</small>` : ""}</div>
+      <ol>${items.map(e => `
+        <li><a class="entry" href="#/p/${e.id}" data-id="${e.id}">
+          <div class="e-date mono muted">${dates(e)}</div>
+          <div class="e-node"><i></i></div>
+          <div class="e-body">
+            <div class="e-top">
+              <span class="mono cat"><i class="tag-sw c-${e.cat}"></i>${CATS[e.cat]}</span>
+              <span class="mono dim">${e.code}</span>
+            </div>
+            <h3>${e.title}</h3>
+            <p class="e-role">${e.role}${e.org && e.org !== e.title ? ` — ${e.org}` : ""}</p>
+            <p class="e-sum">${e.summary}</p>
+            <span class="e-more">Read more</span>
+          </div>
+          <div class="e-media">${mediaHTML(e)}</div>
+        </a></li>`).join("")}
+      </ol>
+    </section>`;
+  }).join("");
+}
+
+/* ==========================================================================
+   RENDER — detail
+   ========================================================================== */
+function renderDetail(e) {
+  const i = ENTRIES.indexOf(e);
+  const prev = ENTRIES[i - 1], next = ENTRIES[i + 1] || ENTRIES[0];
+  const hero = e.images[0];
+  const gallery = e.images.slice(hero ? 1 : 0);
+
+  $("#detail").innerHTML = `
+    <div class="wrap d-bar">
+      <a href="#/">← Timeline</a>
+      <div class="d-pn">
+        ${prev ? `<a href="#/p/${prev.id}">Newer</a>` : `<span class="mono dim">Newest</span>`}
+        ${ENTRIES[i + 1] ? `<a href="#/p/${ENTRIES[i + 1].id}">Older</a>` : `<span class="mono dim">Oldest</span>`}
+      </div>
+    </div>
+
+    <header class="wrap d-head">
+      <div class="d-code mono"><i class="tag-sw c-${e.cat}"></i>${CATS[e.cat]} <span class="dim">${e.code} — ${String(ENTRIES.length - i).padStart(2, "0")} / ${ENTRIES.length}</span></div>
+      <h1>${e.title}</h1>
+      <p class="d-role">${e.role}</p>
+      <div class="d-meta">
+        <div><span class="mono k">Organization</span><span class="v">${e.org}</span></div>
+        <div><span class="mono k">Role</span><span class="v">${e.role}</span></div>
+        <div><span class="mono k">Start</span><span class="v">${e.start}</span></div>
+        <div><span class="mono k">End</span><span class="v">${e.end || "—"}</span></div>
+      </div>
+    </header>
+
+    <div class="wrap d-hero">${mediaHTML(e, true)}</div>
+
+    <div class="wrap d-grid">
+      <aside class="d-aside">
+        <dl class="d-specs">${e.specs.map(([k, v]) => `<div><dt class="mono">${k}</dt><dd>${v}</dd></div>`).join("")}</dl>
+        ${(hero ? e.stats : e.stats.slice(1)).length ? `<div class="d-stats">${(hero ? e.stats : e.stats.slice(1)).map(s => `
+          <div class="plate"><span class="mono ph">${e.code}</span><div><div class="pv">${s.v}</div><div class="pl">${s.l}</div></div><span class="ticks"></span></div>`).join("")}</div>` : ""}
+      </aside>
+      <div class="d-main">
+        <h2>Overview</h2>
+        ${e.body.map(p => `<p>${p}</p>`).join("")}
+        ${e.bullets.length ? `<h2>What I did</h2><ul class="d-list">${e.bullets.map(b => `<li>${b}</li>`).join("")}</ul>` : ""}
+        ${e.links ? `<h2>Links</h2><div class="d-links">${e.links.map(l => `<a href="${l.href}" target="_blank" rel="noopener">${l.label}</a>`).join("")}</div>` : ""}
+      </div>
+    </div>
+
+    ${gallery.length ? `<div class="wrap gallery">${gallery.map((g, n) => `
+      <figure>
+        <div class="frame${g.light ? " light" : ""}"><img src="${g.src}" alt="${g.cap}" loading="lazy" referrerpolicy="no-referrer"></div>
+        <figcaption><span class="mono">Fig. ${String(n + (hero ? 2 : 1)).padStart(2, "0")}</span>${g.cap}</figcaption>
+      </figure>`).join("")}</div>` : ""}
+
+    <a class="d-next" href="#/p/${next.id}">
+      <div class="wrap">
+        <span class="mono"><i class="tag-sw c-${next.cat}"></i>${ENTRIES[i + 1] ? "Next — older" : "Back to newest"} · ${next.start}</span>
+        <b>${next.title}</b>
+      </div>
+    </a>`;
+}
+
+/* ==========================================================================
+   ROUTER (hash-based so it works on GitHub Pages as one file)
+   ========================================================================== */
+let homeScroll = 0, lastId = null;
+
+function route() {
+  const m = location.hash.match(/^#\/p\/([\w-]+)/);
+  const home = $("#home"), detail = $("#detail");
+
+  if (m) {
+    const e = ENTRIES.find(x => x.id === m[1]);
+    if (!e) { location.hash = "#/"; return; }
+    if (!home.hidden) homeScroll = window.scrollY;
+    lastId = e.id;
+    renderDetail(e);
+    home.hidden = true; detail.hidden = false;
+    document.title = `${e.title} — Dominik Toth`;
+    window.scrollTo(0, 0);
+  } else {
+    const wasDetail = !detail.hidden;
+    detail.hidden = true; home.hidden = false;
+    document.title = "Dominik Toth — Mechanical Engineering";
+    const anchor = location.hash && !location.hash.startsWith("#/") ? document.getElementById(location.hash.slice(1)) : null;
+    if (anchor) anchor.scrollIntoView();
+    else if (wasDetail && lastId) {
+      const el = document.querySelector(`.entry[data-id="${lastId}"]`);
+      if (el) el.scrollIntoView({ block: "center" }); else window.scrollTo(0, homeScroll);
+    }
+    updateProgress();
+  }
+  updateNav();
+}
+
+/* ==========================================================================
+   SCROLL — nav state + timeline progress fill
+   ========================================================================== */
+const nav = $("#nav");
+function updateNav() { nav.classList.toggle("solid", window.scrollY > 24 || !$("#detail").hidden); }
+
+function updateProgress() {
+  if ($("#home").hidden) return;
+  const mid = window.innerHeight * 0.55;
+  document.querySelectorAll(".entry").forEach(el => {
+    const r = el.getBoundingClientRect();
+    const f = Math.min(1, Math.max(0, (mid - r.top) / r.height));
+    el.style.setProperty("--fill", f.toFixed(3));
+    el.classList.toggle("past", r.top + 10 < mid);
   });
-  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    links.classList.remove('is-open');
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.textContent = 'Menu';
-  }));
+}
+
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => { updateNav(); updateProgress(); ticking = false; });
+}, { passive: true });
+window.addEventListener("resize", updateProgress);
+window.addEventListener("hashchange", route);
+
+/* ==========================================================================
+   CLOCK
+   ========================================================================== */
+const fmt = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+const tick = () => { $("#clock").textContent = `LAS — ${fmt.format(new Date())} PT`; };
+tick(); setInterval(tick, 1000);
+
+/* ========================================================================== */
+renderTimeline();
+route();
 </script>
 </body>
 </html>
