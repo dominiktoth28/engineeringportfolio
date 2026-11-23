@@ -44,20 +44,20 @@ nav .resume { border-left: 1px solid var(--line); padding-left: clamp(12px, 2.6v
 .btn:hover { background: #38423c; }
 .plain { font-size: .88rem; font-weight: 600; }
 .portrait {
-  position: relative; isolation: isolate; overflow: hidden; min-height: 380px;
-  background: #d9ddd6; border-bottom: 4px solid var(--orange);
+  align-self: center;
+  justify-self: center;
+  width: min(86%, 29rem);
 }
 .portrait img {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 50% 34%;
-  filter: grayscale(1) contrast(1.04);
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: clamp(17rem, 30vw, 22.5rem);
+  margin-inline: auto;
+  border-radius: clamp(12px, 1.4vw, 20px);
+  box-shadow: 0 5px 18px rgb(25 28 27 / 8%);
 }
-.portrait::before,.portrait::after {
-  content: ""; pointer-events: none; position: absolute; z-index: 1;
-  width: 26px; height: 26px; border: solid rgba(255,255,255,.8);
-}
-.portrait::before { top: 16px; left: 16px; border-width: 1px 0 0 1px; }
-.portrait::after { bottom: 16px; right: 16px; border-width: 0 1px 1px 0; }
 .hero:has(.portrait[hidden]) { grid-template-columns: 1fr; }
 .hero:has(.portrait[hidden]) .intro { max-width: 57ch; }
 .hero-foot { border-top: 1px solid var(--line); gap: 18px; justify-content: space-between; padding: 13px 0; color: var(--soft); }
@@ -143,7 +143,8 @@ footer { border-top: 1px solid var(--line); }
  .hero,.cards,.index-group,.detail-grid,.gallery,.contact-grid { grid-template-columns: 1fr; }
  .hero { padding-block: 28px 20px; } .hero h1 { font-size: clamp(4.4rem,14vw,6.25rem); margin-block: 20px; }
  .hero h1 span { display: inline; } .actions { margin-top: 20px; }
- .portrait { min-height: 0; aspect-ratio: 4 / 3; }
+ .portrait { width: min(84%, 22rem); }
+ .portrait img { max-height: clamp(10rem, 56vw, 17.5rem); }
  .hero-foot { flex-wrap: wrap; gap: 4px 16px; } .hero-foot span { font-size: .64rem; }
  .section-head { flex-wrap: wrap; gap: 12px; } .cards { gap: 30px; }
  .card-media { aspect-ratio: 2; } .year { font-size: 1.1rem; } .row { grid-template-columns: 1fr auto; }
@@ -155,6 +156,9 @@ footer { border-top: 1px solid var(--line); }
 .case { display: none; }
 .case:target { display: block; }
 body:has(.case:target) #home { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  html:not(:has(.case:target)) { scroll-behavior: smooth; }
+}
 .resume-preview { display: inline-block; margin-top: 24px; border: 1px solid var(--line); }
 .resume-preview img { display: block; width: 105px; height: auto; }
 .resume-preview:hover { outline: 1px solid var(--ink); }
@@ -171,7 +175,7 @@ body:has(.case:target) #home { display: none; }
     <div class="hero-copy">
       <p class="label kicker">Mechanical engineering portfolio</p>
       <h1 id="name">Dominik <span>Toth</span></h1>
-      <p class="intro">I’m a mechanical engineering student at UNLV. I’ve designed flight hardware, tested composite materials, integrated avionics, and built electromechanical test fixtures. I like taking a design from CAD to the bench and seeing how it holds up.</p>
+      <p class="intro">Mechanical engineering student at UNLV. I’ve designed flight hardware, tested composite materials, integrated avionics, and developed electromechanical systems.</p>
       <div class="actions"><a class="btn" href="#work">Explore my work <span aria-hidden="true">↓</span></a><a class="plain" href="Dominik_Toth_Resume.pdf">View résumé ↗</a></div>
     </div>
     <figure class="portrait">
@@ -183,7 +187,7 @@ body:has(.case:target) #home { display: none; }
     <div class="section-head"><h2>Selected work</h2><a href="#timeline">Full index ↓</a></div>
     <div class="cards">
 <a class="card" href="#/p/senior-design"><div class="card-media"><img loading="lazy" class="" src="senior%20design%20drone%20-%20painted.jpg" alt="Launch vehicle — painted render"></div><span class="label">UNLV · Senior design</span><h3>Rocket-Deployed UAV <span aria-hidden="true">↗</span></h3><p>I modeled the launch vehicle and folding-wing aircraft to study how they fit together and separate in flight.</p></a>
-<a class="card" href="#/p/tachyon"><div class="card-media"><img loading="lazy" class="photo" src="recovery%20lead%20-%20av%20bay%201.jpg" alt="Avionics bay, assembled"></div><span class="label">SEDS UNLV · IREC 2026</span><h3>Tachyon <span aria-hidden="true">↗</span></h3><p>I led an team of 8+ recovery engineers and designed a modular avionics sled for two flight computers and GPS.</p></a>
+<a class="card" href="#/p/tachyon"><div class="card-media"><img loading="lazy" class="photo" src="recovery%20lead%20-%20av%20bay%201.jpg" alt="Avionics bay, assembled"></div><span class="label">SEDS UNLV · IREC 2026</span><h3>Tachyon <span aria-hidden="true">↗</span></h3><p>I led a team of 8+ recovery engineers and designed a modular avionics sled for two flight computers and GPS.</p></a>
 <a class="card" href="#/p/anduril"><div class="card-media"><div class="intern-cover"><span>Structures</span><span>Test fixtures</span><span>Handheld displays</span><span>RF enclosures</span></div></div><span class="label">Industry · Summer 2026</span><h3>Anduril Industries <span aria-hidden="true">↗</span></h3><p>I designed mechanical hardware for field and lab use, from a handheld display to a benchtop station for testing electronics.</p></a>
 </div>
   </div></section>
@@ -421,6 +425,35 @@ body:has(.case:target) #home { display: none; }
   }
   portrait.addEventListener('error', hideMissingPortrait);
   if (portrait.complete && !portrait.naturalWidth) hideMissingPortrait();
+
+  // Native anchors handle scrolling, focus, and history. Time the visual
+  // effect to the heading becoming visible, even on a long scroll to Contact.
+  const allowMotion = window.matchMedia('(prefers-reduced-motion: no-preference)');
+  let pendingReveal;
+  document.addEventListener('click', event => {
+    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    pendingReveal?.disconnect();
+    if (!allowMotion.matches) return;
+    const destination = document.getElementById(link.hash.slice(1));
+    if (!destination?.matches('#home > section, .bar')) return;
+    const heading = destination.matches('.bar') ? document.getElementById('name') : destination.querySelector('h2');
+    if (!heading) return;
+
+    const reveal = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      reveal.disconnect();
+      if (location.hash !== link.hash || !allowMotion.matches) return;
+      heading.animate(
+        [{ filter: 'blur(2px)', opacity: 0.8 }, { filter: 'blur(0)', opacity: 1 }],
+        { duration: 340, easing: 'ease-out' }
+      );
+    }, { threshold: 0.6 });
+    pendingReveal = reveal;
+    reveal.observe(heading);
+  });
 
   const homeTitle = document.title;
   const skip = document.getElementById('skip');
