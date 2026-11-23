@@ -453,14 +453,14 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
    cat: "work" | "project" | "leadership" | "education"
    ========================================================================== */
 /* --------------------------------------------------------------------------
-   PHOTOS — files in the repo's images/ folder.
+   PHOTOS — files at the top level of the repo, next to index.html.
    Names must match GitHub EXACTLY, including capitals and the extension
    (.jpg / .jpeg / .png). If a photo doesn't show, fix its name here.
    -------------------------------------------------------------------------- */
 const PHOTOS = {
-  l1Cad:          "l1 - cad.png",
+  l1Cad:          "l1 - cad.jpg",
   l1Posed:        "l1 - posed with rocket.jpg",
-  l1:             "L1.jpg",
+  l1:             "L1.JPG",
   makoCfLaminate: "mako - carbon fiber laminate.jpg",
   makoCfSpecimen: "mako - carbon fiber specimen.jpg",
   makoFgLaminate: "mako - fiberglass laminate.jpg",
@@ -469,15 +469,15 @@ const PHOTOS = {
   recEngAvBay2:   "recovery engineer - av bay 2.jpg",
   recEngRecovery: "recovery engineer - competition recovery photo.jpg",
   recLeadAvBay1:  "recovery lead - av bay 1.jpg",
-  recLeadAvCad:   "recovery lead - av bay finished cad.png",
-  recLeadGround:  "recovery lead - ground station.jpg",
-  recLeadBulk:    "recovery lead - machined bulkheads.jpg",
+  recLeadAvCad:   "recovery lead - av bay finished cad.JPG",
+  recLeadGround:  "recovery lead - ground station.JPG",
+  recLeadBulk:    "recovery lead - machined bulkheads.JPG",
   recLeadData:    "recovery lead - test flight graphed data.png",
-  resume:         "resume-photo.png",
-  sdBaseCad:      "senior design drone - base cad.png",
-  sdPainted:      "senior design drone - painted.png"
+  resume:         "resume-photo.jpg",
+  sdBaseCad:      "senior design drone - base cad.jpg",
+  sdPainted:      "senior design drone - painted.jpg"
 };
-const P = key => "images/" + encodeURIComponent(PHOTOS[key]);
+const P = key => encodeURIComponent(PHOTOS[key]);
 const IMG = "https://lh3.googleusercontent.com/sitesv/";
 
 const ENTRIES = [
