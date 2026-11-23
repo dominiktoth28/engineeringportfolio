@@ -164,7 +164,93 @@ body:has(.case:target) #home { display: none; }
 .resume-preview { display: inline-block; margin-top: 24px; border: 1px solid var(--line); }
 .resume-preview img { display: block; width: 105px; height: auto; }
 .resume-preview:hover { outline: 1px solid var(--ink); }
+
+/* Home entrance. Each small PNG contains 15 alpha masks stacked vertically.
+   Advancing in 14 steps uncovers the live text and photograph in tile groups. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  @supports (mask-image: linear-gradient(black, black)) or (-webkit-mask-image: linear-gradient(black, black)) {
+    html[data-boot] #name {
+      --boot-mask: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAe8AQMAAACqVJiVAAAABlBMVEUAAAAAAAClZ7nPAAAAAXRSTlMAQObYZgAABOpJREFUeNrt3Utu3ToQRVEycJ+aQeY/LM9AGgFfg7yyriR+nLgRPK1CYDjAhhsHhfocUVQIQgghhBBCCCGEEEIIIYT4ZyLnnHMOIeQ15HUA//rWn0b/f+iQc85rCCnTBN3Lk5Um6GF8hBByCJEm6FHfmWw6FHxynuytZ6YBUfDJfadEpAnaHIv+674zny0UfHieCKHvoH9kL66xhmLgUxDdyhO+PXrcd1KetFAo+OQ8qfUk1e5DQfRt3+Hbo8eR6nwyHGIp+Og8+c5qTMFHz7E0Qc/sxWsYTrAU1HfMseipvXj1HBA90XeOwT9B38T5nFKmCbq176Rcu4/ngOjOfPLy2Yath4IPn0/2lcd8gu7PJ+UtnkgTdL/1TBgpFHy4f7IfQaEJ+r7vpDxchymonpQTSm+/UBDd6DuTV1tQ8OF7Md8ePUtvMcZIE3SP3mKpLXEJnQWZgk+l421CRAqi7+i4vPpOt/tQED1jtVHw0fvOy7d3rgDd80/KuYLD6cdWYaGgOTZMXL1FQXtxZx2mIHpPkriE/MlnQ7fn2Hffvg4n6eZECgXRu3MSl0N6bJGC6K96sh4Oyqbc8lIoaN8JE4sPBdFhi3Wg5dujJ+bYOr7e7cgUfHSeHF71ogm6U0+qb58Hb3tRUN95azoURLf34uHRAgqaT5w/QX9r33l7h5Rvj76lU37z7WmCDuF4X0GJmGrvyeXJjuc76BCGvn3eFgqir3tx/zpZCsqTPer4yrdH3+XJl2/fXpApaI7NW8w0Qc/NJ1fPhILowLdH/9F80r/rnoLor/RIr3dIL1sPBdGnJKkXodAE3fJPnLdHn6O5C++fz4gURJ/ow7O/cgPkqftQUN+5+vbX3YeC8uSYJHx7dJN+XW3BP0EP6sk6+HYGBZ+eJ2u43kd9LSwUfDp9qB4lPfgn6P6+s9/9eH0ySEH0KXn49uhxPWlcE0rBp9J8e/Sf0nx79Dk+7otJWmPKYYvZe17ou/kkhK+Xd65v8VBQPXkZKetpRKEg+ponufadHNMqT9DDOTZskW+PbtKvwZVvj+7MsbeGGwXNJ4MsKj9ft1tQUD25idd30vf7Qin4VLrn2+fLdkxB9GmULWMJ3x7dmU9iWuuLgXx7dCtPUq4lhYLoifmEgug+3bpCloLo6zR7vV6JgujjslN8lbr1HEZZCj6VnvbtU6YguplFa/iqKinTRD1pWff7vW0UtBf3iPIcMK0UVE/uHwK+nyvIKwXVk9Z2vFAQ3aG9N4qeqScn374cVaIg+hzvvn0pLxREn+fbz1iWYr49OjS+N/p27pGC6An/pHJpjRRE91bjWP/x7dWTbiXZjRQKPpX+mKkneVs8LzbHjs8VpHoWhYL6TqOYLBRET9L1nmr1xHzSnmDztsT6X/uO+aRxNWjmx6J79eT2s9cURJ9jLyPO26P59ugfp82x6skw+PboQYbEsMX4O+esnth3ehbK6w7zhYLy5H47LkkSQgzBHIvuN51ydwHfXj3puyilpNh3HkyP7gUtBn5x7+WJetIuJmU4Ka4sBfknt56J776hx3lySRsKyhOaoH+A3mJcaGKOHdUd5+3RM+vzZwxbpIl6op6g/4oud91/em8U3Q3nqNHf6TsxrRRE95Jk4ds/nJ66PzaEEJyjlic0QaPRaDQajUaj0Wg0Go1Go9FoNPqfoP8DbRqzgD9nWTwAAAAASUVORK5CYII=");
+      --boot-duration: 620ms;
+      --boot-delay: 15ms;
+    }
+    html[data-boot] .portrait img {
+      --boot-mask: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANgAAA4QAQMAAAAealgqAAAABlBMVEUAAAAAAAClZ7nPAAAAAXRSTlMAQObYZgAABaJJREFUeNrt3UuO4zgURFGykXNp/7urHUgrYA9kKZ2WXUCKITSBPm+UqEBNLki+T4h0KUIIIYQQQgghhBBCCCGEEEI8RVtKmVqZ2ln65y//jfYpptZawyXFs7XWFlxS2lcppU6t4pJan0ux35Pnp0hGbaVU6yy7Pif7PaZ9Su6YXdfWiot8JIQQ/3FM+vd0/45LtH/HRb0khLgQrTX+UfL8PPyjE1LMruR3/lGa51bSn10PzK7U8+u8cay45OrPt7seswvr83txnlxjzK71m/zirFZn+z2l8Yvz+Uj9me2PcInXSyIW/A7ayP2m/H5Df4SL/D5ufve9YrpeepviMbsyD9n9I/17iif/KKyt1X5P1p9TK6U0XEI8jxF9W2dces/PZT9Fl9cjFLPL+YhfHNP2yx21VlwiWp2L+jOWj6ZWP4yYMLuY393nCvbv5kvpeci5UsKlv17Sv8d4Lrjkz0/1UnJ9Oj+z6xPP4DyEfxStlwr/KF0vPa4kLD/AYnadZ3nzKiBml7XHsvzZyONyvT86uiRcItpazZNT63O7wsk/ys5D+EcJ7ev4y33DcD4yD8mdn7jcUs/jkpov4RJcn4t5nXpp7PXJ78jVn+4f3XJ+yu/Z9bmahyTW5/LRgsfs8vpsuNzQv/OPgjwft7qeqlDMrmtbMvo5pcela7+fGk/MevrN7W9cgvmIf5Sdh/CLu7V6rEj+UVYzX0r1R8fifHnLDrPL2iMZ+X4pko8W33+mNf5ROr+fUzxmF7W11tk8OT8PUc+n6qX27lehMbuW3+WjJE/+UVabWp1xidbzL/7Rvvcx6+HJP4rXS/yj5H7nHwV5LuX71gwu/KPx1qf9fsf6tN+Tmvl8aB5S9q/s+Ecx7fQwCy5d9fzpyjYuv9d8z3AXz8I/Smn8o7TW/vCPwvW894KCmv1+x3wJlwjP86QOlx7tIHn4R9u/YNafj/hHKZ4HyWO5YtbJ8+WtG8z6efLfYzyX8vLDfJj9XvueJx/fz1dc+Edjavyj3H6v+s0oz7ZTdX6W0Hu//KNkv2meHND4Rzdoe1r3vk1svy9vLiZg1nV+Tq8WEmad+YgfF6yX+Ef5/h2XIM/TQzeYdfJ8MToxC8yXVvePkvt9y0r2e2A+f0yZpqViFjo/+UfB9dn4R9n68+evRmLWvz4fU3rMcvU8LsH8zj9K8XRfJp6PzOe7Nf7RjZr1mdT2kbL+qPiedjyepfCPkvVSk4/i/XuRj3LaflmGf5TUnl5Nx6Wzf6+ltHVu5kv8o1HnS/yj4PrkH2XXZzs+BF1nzAL5aGpl/Z44YdbFc50bLkGee/Nep7a5HpiZL42W373PEJyHbB9/4lK8dzHm+Wl99mr17S+/6zdTWp3LcSsWly7t6dYhLr4HG7F/318VwCXzfQj/KK7xj9Ln59HFY5aZh3ivMusf7YkJs36e5bg1My2Y9ffvjyuxzfmZy0fuH2XrJVzS76na78l53Trjwj8ajufxpFXzfnKuPzL/jNafj12vXgrmI/4R/2hAjX90z353/714z2rsfLStUswy2r5KcbE+B9SO3zrE5ffa16fFyT8K90f8I+fngNqW3J2fKe3pCXpcYvnd9za5/N58D3aHNjVckvUSZrRR8xH/KJmPcIl+T8vvoI2c3+ujCp0x693v+31Y+Sg/XzKvy/LEjEb7n2hrbc08JNMflccTTPKRfDSkttatBMUltj69r2i/j73fcQlqtVb+UXC/12mx35M8MctpdS7uwwa1tpSyVvVnsN/cWk7MMjzXuZTS1opZhOf2MS1mAW3v3Nsf33+G+03Mwprzk2a/02iXtDrjkuyP1PO0cTX3ubKa+0fqpYG1Osvvyfze5Pd0vWSerP4cul6yPqP1knwU2+/8I/7RwBr/SH9Eo9FoNBqNRqPRaDQajUaj0Wg0Go1GC2n/Ak2Yh+YXRwKPAAAAAElFTkSuQmCC");
+      --boot-duration: 710ms;
+      --boot-delay: 125ms;
+    }
+    html[data-boot] :is(#name, .portrait img) {
+      -webkit-mask: var(--boot-mask) 0 100% / 100% 1500% no-repeat;
+      mask: var(--boot-mask) 0 100% / 100% 1500% no-repeat;
+      animation: boot-assemble var(--boot-duration) steps(14, end) var(--boot-delay) backwards;
+    }
+    @keyframes boot-assemble {
+      from { -webkit-mask-position: 0 0%; mask-position: 0 0%; }
+      to   { -webkit-mask-position: 0 100%; mask-position: 0 100%; }
+    }
+  }
+
+  html[data-boot] .hero .kicker::before {
+    transform-origin: left;
+    animation: boot-signal 260ms steps(5, end) backwards;
+  }
+  @keyframes boot-signal { from { transform: scaleX(.16); } to { transform: scaleX(1); } }
+
+  html[data-boot] .hero .intro,
+  html[data-boot] .hero .actions {
+    animation: boot-settle 360ms cubic-bezier(.2,.7,.25,1) 240ms backwards;
+  }
+  html[data-boot] .hero .actions { animation-delay: 330ms; }
+  @keyframes boot-settle {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  html[data-boot] .hero-foot { position: relative; }
+  html[data-boot] .hero-foot::before {
+    content: "";
+    position: absolute;
+    inset: -1px 0 auto;
+    height: 1px;
+    background: var(--orange);
+    pointer-events: none;
+    transform-origin: left;
+    animation: boot-trace 960ms cubic-bezier(.35,.05,.2,1) both;
+  }
+  @keyframes boot-trace {
+    0%   { transform: scaleX(0); opacity: .85; }
+    75%  { transform: scaleX(1); opacity: .65; }
+    100% { transform: scaleX(1); opacity: 0; }
+  }
+}
 </style>
+<script>
+  // Set the startup state before the first paint. Native links stay active.
+  (() => {
+    const motion = window.matchMedia('(prefers-reduced-motion: no-preference)');
+    const navigation = performance.getEntriesByType('navigation')[0];
+    const home = ['', '#/', '#home'].includes(location.hash);
+    if (!home || !motion.matches || document.hidden || navigation?.type === 'back_forward') return;
+
+    const root = document.documentElement;
+    const listeners = new AbortController();
+    const options = { capture: true, passive: true, signal: listeners.signal };
+    function finishBoot() {
+      root.removeAttribute('data-boot');
+      listeners.abort();
+    }
+    // An input, route change, or backgrounded tab immediately reveals the final layout.
+    for (const type of ['pointerdown', 'keydown', 'wheel', 'scroll', 'hashchange', 'pagehide']) {
+      window.addEventListener(type, finishBoot, options);
+    }
+    document.addEventListener('visibilitychange', finishBoot, options);
+    motion.addEventListener('change', finishBoot, options);
+    document.addEventListener('animationend', event => {
+      if (event.animationName === 'boot-trace') finishBoot();
+    }, options);
+    root.setAttribute('data-boot', '');
+  })();
+</script>
 </head>
 <body>
 <a class="skip" id="skip" href="#home">Skip to content</a>
