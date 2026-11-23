@@ -191,6 +191,9 @@ ul, ol { list-style: none; }
 .frame img { width: 100%; height: 100%; object-fit: cover; }
 .frame.light { background: #fff; }
 .frame.light img { object-fit: contain; }
+.frame.tall img { object-position: 50% 35%; }
+.d-hero .frame.tall img { object-fit: contain; }
+.gallery .frame.tall { aspect-ratio: 3 / 4; }
 
 /* spec plate — light panel with a key figure */
 .plate {
@@ -223,6 +226,9 @@ ul, ol { list-style: none; }
 .contact-grid a:first-child { border-top: 1px solid var(--line-soft); }
 .contact-grid a:hover { color: var(--accent); }
 .contact-grid a span { color: var(--dim); }
+.contact-grid a.resume-thumb { display: block; width: 180px; margin-top: 24px; padding: 0; border: 1px solid var(--line); background: #fff; }
+.contact-grid a.resume-thumb:hover { border-color: var(--accent); }
+.contact-grid a.resume-thumb img { width: 100%; }
 
 footer { border-top: 1px solid var(--line); padding: 22px 0; }
 footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
@@ -276,7 +282,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 .d-links a { border: 1px solid var(--line); padding: 10px 16px; font-size: 14px; transition: border-color .2s, color .2s; }
 .d-links a:hover { border-color: var(--accent); color: var(--accent); }
 
-.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px 24px; padding-bottom: 96px; }
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px 24px; padding-bottom: 96px; align-items: start; }
 .gallery figure .frame { aspect-ratio: 4 / 3; }
 .gallery figcaption { display: flex; gap: 14px; padding-top: 12px; font-size: 14px; color: var(--muted); }
 .gallery figcaption .mono { color: var(--dim); flex: none; padding-top: 2px; }
@@ -357,14 +363,14 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 
     <div class="wrap cover-main">
       <h1 class="reveal"><span>Dominik</span><span>Toth</span></h1>
-      <p class="cover-sub reveal d1">Mechanical engineer. Flight hardware, recovery systems, and electro-mechanical design.</p>
+      <p class="cover-sub reveal d1">Mechanical engineering student at UNLV. Recovery systems, flight hardware, and electro-mechanical design.</p>
     </div>
 
     <div class="wrap">
       <div class="readouts reveal d3">
         <div><span class="mono k">Program</span><span class="mono v">B.S. Mech. Eng. — UNLV ’27</span></div>
         <div><span class="mono k">Position</span><span class="mono v">36.1699° N 115.1398° W</span></div>
-        <div><span class="mono k">Status</span><span class="mono v"><span class="sq"></span>&nbsp; Open — Summer 2027</span></div>
+        <div><span class="mono k">Current</span><span class="mono v"><span class="sq"></span>&nbsp; Senior design — rocket-deployed UAV</span></div>
         <div><span class="mono k">Index</span><a href="#timeline" class="mono v scroll-cue"><i></i><span id="entryCount">— entries</span></a></div>
       </div>
     </div>
@@ -376,7 +382,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <span class="mono dim">Timeline</span>
         <div>
           <h2>2023 — present</h2>
-          <p>Work, projects, and leadership in order, newest first. Select any entry for the full write-up.</p>
+          <p>Work, projects, leadership, and education, newest first. Select an entry for details.</p>
           <div class="legend">
             <span class="mono"><i class="tag-sw c-work"></i>Work</span>
             <span class="mono"><i class="tag-sw c-project"></i>Project</span>
@@ -410,7 +416,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 
   <section class="section contact" id="contact">
     <div class="wrap">
-      <h2>Looking for a Summer 2027 mechanical engineering internship.</h2>
+      <h2>Contact</h2>
       <div class="contact-grid">
         <span class="mono dim">Contact</span>
         <div>
@@ -421,6 +427,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <div>
           <a href="https://www.linkedin.com/in/dominiktoth1/" target="_blank" rel="noopener">LinkedIn <span class="mono">↗</span></a>
           <a href="Dominik_Toth_Resume.pdf" target="_blank" rel="noopener">Résumé <span class="mono">PDF</span></a>
+          <a href="Dominik_Toth_Resume.pdf" target="_blank" rel="noopener" class="resume-thumb" aria-label="Open résumé PDF"><img id="resumeThumb" alt="Résumé preview" loading="lazy"></a>
         </div>
       </div>
     </div>
@@ -445,6 +452,32 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
    Edit entries here. Order within each group = newest first.
    cat: "work" | "project" | "leadership" | "education"
    ========================================================================== */
+/* --------------------------------------------------------------------------
+   PHOTOS — files in the repo's images/ folder.
+   Names must match GitHub EXACTLY, including capitals and the extension
+   (.jpg / .jpeg / .png). If a photo doesn't show, fix its name here.
+   -------------------------------------------------------------------------- */
+const PHOTOS = {
+  l1Cad:          "l1 - cad.png",
+  l1Posed:        "l1 - posed with rocket.jpg",
+  l1:             "L1.jpg",
+  makoCfLaminate: "mako - carbon fiber laminate.jpg",
+  makoCfSpecimen: "mako - carbon fiber specimen.jpg",
+  makoFgLaminate: "mako - fiberglass laminate.jpg",
+  makoGelTimer:   "mako - gel timer spindle.jpg",
+  recEngAvBay1:   "recovery engineer - av bay 1.jpg",
+  recEngAvBay2:   "recovery engineer - av bay 2.jpg",
+  recEngRecovery: "recovery engineer - competition recovery photo.jpg",
+  recLeadAvBay1:  "recovery lead - av bay 1.jpg",
+  recLeadAvCad:   "recovery lead - av bay finished cad.png",
+  recLeadGround:  "recovery lead - ground station.jpg",
+  recLeadBulk:    "recovery lead - machined bulkheads.jpg",
+  recLeadData:    "recovery lead - test flight graphed data.png",
+  resume:         "resume-photo.png",
+  sdBaseCad:      "senior design drone - base cad.png",
+  sdPainted:      "senior design drone - painted.png"
+};
+const P = key => "images/" + encodeURIComponent(PHOTOS[key]);
 const IMG = "https://lh3.googleusercontent.com/sitesv/";
 
 const ENTRIES = [
@@ -453,31 +486,34 @@ const ENTRIES = [
     title: "Rocket-Deployed UAV",
     org: "UNLV Senior Design", role: "Launch vehicle & integration",
     start: "Sep 2026", end: "Present",
-    summary: "A solid-motor rocket that carries a folding-wing, fixed-wing UAV to altitude and releases it.",
-    stats: [{ v: "Phase 1", l: "Preliminary design: vehicle configuration and deployment concepts" }],
+    summary: "Solid-motor launch vehicle that carries and deploys a folding-wing, fixed-wing UAV.",
+    stats: [{ v: "Phase 1", l: "Preliminary design" }],
     specs: [["Phase", "Preliminary design"], ["Vehicles", "Solid-motor rocket + fixed-wing UAV"], ["Tools", "CAD, OpenRocket"], ["Status", "In progress"]],
     body: [
-      "My senior design capstone sits where rocketry meets aircraft design. The UAV has to survive boost packed inside the airframe, then separate, unfold its wings, and fly.",
-      "Work so far covers the preliminary vehicle configuration, the deployment mechanism, and the requirements that tie the rocket and aircraft together."
+      "Senior design capstone. The system is a solid-motor launch vehicle and a fixed-wing UAV with folding wings, carried inside the airframe and released in flight.",
+      "Current work covers preliminary vehicle configuration, wing-deployment concepts, and the mechanical and avionics interfaces between the rocket and the UAV."
     ],
     bullets: [
       "Developed preliminary CAD models and OpenRocket simulations for the launch vehicle and deployable UAV, evaluating packaging constraints, vehicle configuration, flight stability, and rocket-aircraft integration.",
       "Investigated folding-wing deployment concepts and mechanical coupling methods for securing and releasing the UAV.",
       "Defined preliminary mechanical and avionics integration requirements: flight-computer packaging, deployment interfaces, control-surface configuration for flight and roll stability, and overall subsystem layout."
     ],
-    images: []
+    images: [
+      { src: P("sdBaseCad"), cap: "Launch vehicle and UAV — base CAD", light: true },
+      { src: P("sdPainted"), cap: "Launch vehicle — painted render", light: true }
+    ]
   },
   {
     id: "ski-mount", code: "DT-10", group: "Now", cat: "project",
     title: "Vertical Ski Wall Mount",
     org: "Personal project", role: "Design & fabrication",
     start: "Ongoing", end: "",
-    summary: "A compact wall mount that stores and displays skis — started for mine, now a small run for friends.",
+    summary: "3D-printed wall mount for vertical ski storage and display, in prototype iteration.",
     stats: [],
     specs: [["Stage", "Prototype iteration"], ["Current material", "PLA (3D printed)"], ["Next", "Engineering filament or AM aluminum"]],
     body: [
-      "As an avid skier I wanted a mount that shows off my skis while keeping them easy to grab. The design quickly grew to include mounts for friends.",
-      "Prototypes are 3D printed in PLA to refine geometry, fit, and load paths, with a planned move to an engineering-grade filament or additively manufactured aluminum for strength and long-term durability."
+      "Wall mount that stores skis vertically for storage and display. Additional mounts have been made for friends.",
+      "Prototypes are 3D printed in PLA to refine geometry, fit, and load paths. The next iteration will use an engineering-grade filament or additively manufactured aluminum."
     ],
     bullets: [],
     images: [{ src: IMG + "AG8ngQXh75LkKKkleHiWA-7KcxkdJ4vtu0nywbn3laB8MoeBkR77hhagItOyeaQ6yYHDqsAG_MgfKk3UCjTzEKDe8Y7cpSNjUuGucQ8H3o6AQ5bq7j7rVci2DgJkKsxB6QIT3ZDXcANKt4U9D_vIXq8oz_6_C2k6hEzLJt32_lIwGvAHaerZmH72bUsCsKzPn80lfwjNe_W_pdyq4uINe0HC-ZaiPOcb845EGKNY_N5GS9g=w1280", cap: "Ski mount prototype" }]
@@ -491,7 +527,7 @@ const ENTRIES = [
     stats: [{ v: "54%", l: "Cost reduction on a redesigned structural riser assembly" }, { v: "−37", l: "Hardware components eliminated per unit" }],
     specs: [["CAD", "Siemens NX"], ["Analysis", "ANSYS static FEA"], ["Processes", "Weldments, sheet metal"], ["Collaborators", "Electrical & software teams"]],
     body: [
-      "A summer on the electro-mechanical team, owning hardware from requirements through manufacturing drawings: a structural weldment, a production test fixture, lab enclosures, and a rugged handheld unit."
+      "Electro-mechanical engineering internship covering a structural weldment, a production test fixture, sheet-metal enclosures for RF test equipment, and a rugged handheld display unit, from requirements through manufacturing drawings."
     ],
     bullets: [
       "Redesigned a structural weldment riser assembly supporting an electronic warfare platform in Siemens NX — manufacturing drawings, ANSYS static FEA, and bolted-joint validation under wind-induced loading. Standardized component sizing to cut cost 54% and eliminate 37 hardware components per unit.",
@@ -506,11 +542,11 @@ const ENTRIES = [
     title: "SEDS UNLV — Secretary",
     org: "Students for the Exploration and Development of Space", role: "Secretary",
     start: "Feb 2026", end: "May 2026",
-    summary: "Ran administration for a 250+ member aerospace student organization and brought in new sponsors.",
+    summary: "Administrative operations and sponsorship for a 250+ member aerospace student organization.",
     stats: [{ v: "$18k+", l: "New sponsorship funding secured" }, { v: "250+", l: "Members in the organization" }],
     specs: [["Organization", "SEDS UNLV"], ["Members", "250+"], ["Focus", "Operations & sponsorship"]],
     body: [
-      "SEDS UNLV is the university's chapter of Students for the Exploration and Development of Space, and competes each year in the International Rocket Engineering Competition. Alongside my technical role on the recovery team, I served on the officer board."
+      "SEDS UNLV is the university's chapter of Students for the Exploration and Development of Space and competes annually in the International Rocket Engineering Competition (IREC)."
     ],
     bullets: [
       "Directed administrative operations for a 250+ member aerospace student organization.",
@@ -523,24 +559,27 @@ const ENTRIES = [
     title: "Tachyon",
     org: "SEDS UNLV · IREC 2026", role: "Recovery Subsystem Lead",
     start: "Jul 2025", end: "Jun 2026",
-    summary: "Led an 8+ person team designing a redundant dual-deploy recovery system for UNLV's IREC 2026 rocket.",
+    summary: "Led an 8+ member team on the redundant dual-deploy recovery system for UNLV's IREC 2026 rocket.",
     stats: [{ v: "8+", l: "Engineers on the recovery subsystem team" }],
     specs: [["Team", "8+ engineers"], ["CAD", "SolidWorks"], ["Analysis", "ANSYS FEA, MATLAB"], ["Avionics", "Dual altimeters + Featherweight GPS"], ["Requirements", "IREC 2026 DTEG"]],
     body: [
-      "Tachyon uses a redundant dual-deploy architecture for safe, damage-free recovery. I led system design, testing, integration, and documentation, working closely with the avionics, structures, and propulsion teams and building on the prior year's 100% recovery score.",
-      "The avionics sled carries two independent dual-deploy altimeters so a single-point failure can't prevent deployment, plus a Featherweight GPS tracker for post-landing recovery. Every component can be accessed or swapped without tearing down the bay, and an integrated screw-switch port gives safe power control once the sled is installed."
+      "Recovery subsystem for SEDS UNLV's IREC 2026 rocket, using a redundant dual-deploy architecture. Led system design, testing, integration, and documentation, coordinating with the avionics, structures, and propulsion teams.",
+      "The avionics sled carries two independent dual-deploy altimeters and a Featherweight GPS tracker. Components can be removed without disassembling the bay, and an integrated screw-switch port controls power once the sled is installed."
     ],
     bullets: [
-      "Spearheaded the modular avionics sled supporting dual flight computers and GPS, designed in SolidWorks and 3D printed to withstand high-vibration and thermal environments.",
+      "Designed a modular avionics sled supporting dual flight computers and GPS in SolidWorks, 3D printed for high-vibration and thermal environments.",
       "Developed a MATLAB shock-load calculator to predict parachute deployment loads and drive structural design decisions.",
-      "Performed ANSYS static FEA on machined aluminum bulkheads to check stress, deformation, and factor of safety under worst-case separation loads.",
+      "Performed ANSYS static FEA on machined aluminum bulkheads for stress, deformation, and factor of safety under worst-case separation loads.",
       "Produced the avionics block diagram used in progress reports and design reviews.",
-      "Managed subsystem documentation, BOMs, and progress reports to maintain flight readiness and configuration control."
+      "Managed subsystem documentation, BOMs, and progress reports for flight readiness and configuration control."
     ],
     images: [
-      { src: IMG + "AG8ngQVcO5oLbqIZnKpXjRnGGb4Pf36Bg6tT7PK68YcCgw1u7UE5EOYaNH0CUAUrWzj73uhOyYZPHFRG8NNiG-uPuPEOUCyhFcYRYb_n0SAPrv4VY62DUJRDRYen4huEQzzyzN96_OLs6L41CSX5_C89Q37_xmvgeI2hncw26ogIStUDoj43iVJpxcO7cEw6B94=w1280", cap: "Avionics sled, built — dual altimeters, GPS tracker, screw-switch port" },
-      { src: IMG + "AG8ngQWMQYqvLi0GUusaKSDjJSNKNz7G-49ib1rMe1HByKi_n9Ga25QAY_0mWovpPsrsTcmCao-QFBrYdnfUIdQGYsf3cw0i8CCyYLYE-HOVsmo3R7JWvKFVqtmZkb4Vq3op_U387e8_j7DQxzz47TRnH2hfoNY0bfnmi2Kj0ednKZM0E4QZlPKBDsAzFFzbBhO7CU-E7h0lpayzv-kJOfKZ4FryA4Nw6FdsEtqA5C47qTs=w1280", cap: "Avionics sled CAD — SolidWorks" },
+      { src: P("recLeadAvBay1"), cap: "Avionics bay, assembled", tall: true },
+      { src: P("recLeadAvCad"), cap: "Avionics bay — final CAD", light: true },
+      { src: P("recLeadBulk"), cap: "Machined aluminum bulkheads" },
       { src: IMG + "AG8ngQXr3-ZSXN4atgJ6OpReDZxYL1Y8o-rqC5eexJj1NWl9odRZEgKQlK0XR_MUJZHvnNRbnhR08_Rhi9lwVo0Z8IGqgHc3SkLZkhEQurounmSde-uhTNLLjeUyZ13clTEKYenBtTYaDNtffsK6URwTxTSJVmB-vD32y28Z-4kXRe8thKoYlEr9IFf3iPoRQi4shWhfsusUlnuZ2W0GmjmI6YrvzidSHfr37c6yNu46Al8=w1280", cap: "Bulkhead static structural analysis — ANSYS" },
+      { src: P("recLeadGround"), cap: "Ground station", tall: true },
+      { src: P("recLeadData"), cap: "Test flight — graphed flight data" },
       { src: IMG + "AG8ngQXacZqZBgfzkFS19eqRHak1c9onkyEHqBnrFZr1-sR5XJxE65u6n3vOrH6iGpxvnPwCsDRE7glylNMvgMXNEyD0V81Tf7KFnHxT2utL0CkXqnEIHlWDtNKr1z5WbpGm18G8GOTB5L7OrF1ZgjFFJq0rbihhHSN6EuvLA23rxf4QpPCw8wK9aH-ZLaUYv4CCb7JgVYIapRufQ_cudvLwXOM4UbhE1ImbNGd1gBFfVNs=w1280", cap: "Avionics bay electronics block diagram", light: true }
     ]
   },
@@ -553,7 +592,7 @@ const ENTRIES = [
     stats: [{ v: "25–50", l: "Composite test specimens produced per week" }, { v: "1–2 wk", l: "Certification lead times supported by QC data" }],
     specs: [["Test frame", "Tinius Olsen + Horizon"], ["Standards", "ASTM, UL94, FAR, FAA"], ["CAD", "Fusion 360, Onshape"], ["Materials", "Aerospace & MIL-spec composites"]],
     body: [
-      "Hands-on work in a composites lab: running mechanical tests, checking incoming prepreg, building specimens, and improving the lab's own test equipment."
+      "Composites lab internship covering mechanical testing, prepreg quality control, specimen fabrication, resin formulation, and test-equipment upgrades."
     ],
     bullets: [
       "Conducted ASTM materials testing on aerospace and MIL-spec composites — lap shear, 3-point bend, short beam shear, and DMA — on a Tinius Olsen test frame with Horizon software.",
@@ -562,18 +601,23 @@ const ENTRIES = [
       "Formulated flame-retardant resin systems, tuning chemical ratios and cure cycles; supported FAA 12- and 60-second burn certification of new materials.",
       "Upgraded gel timers, mechanical test frames, and flame test chambers with 3D-printed parts designed in Onshape."
     ],
-    images: [{ src: IMG + "AG8ngQUK5KLUd_8XeBQq8yzXJeGc4Ve9DzQS-_W-DQtfSFIeTZilOBGKmUTB-GAy4B_YzUkO8U6FN0KbrmxzEG6RfYQ7cWX1sDmbgV0Cw9YVl95UUHYofDxKqk1gxyd9c_MbjCIPaRGEA7ws54EFFW0ikoX3fPlL2whN9vV7LQmQblRHDFky_3HDYUZSPFmHBaAQPN1dBhh4tM24Q4p_iOCZU4QxEbuBFHX3kF37i8Qd=w1280", cap: "Prepreg, CNC-milled specimens, and custom 3D-printed test fixtures" }]
+    images: [
+      { src: P("makoCfSpecimen"), cap: "CNC-milled carbon fiber test specimen" },
+      { src: P("makoCfLaminate"), cap: "Carbon fiber laminate" },
+      { src: P("makoFgLaminate"), cap: "Fiberglass laminate" },
+      { src: P("makoGelTimer"), cap: "Gel timer spindle test system" }
+    ]
   },
   {
     id: "makerspace", code: "DT-05", group: "2025", cat: "work",
     title: "UNLV Makerspace",
     org: "UNLV Office of Economic Development", role: "Makerspace Creator Intern",
     start: "Apr 2025", end: "May 2025",
-    summary: "Rapid scale prototypes of furniture designed for children with special needs.",
-    stats: [{ v: "< 1 wk", l: "From concept to finished scale prototypes" }],
+    summary: "Scale prototypes of furniture designed for children with special needs.",
+    stats: [{ v: "< 1 wk", l: "Concept to finished scale prototypes" }],
     specs: [["Scales", "1/8 plywood, 1/32 printed"], ["Tools", "AutoCAD, LightBurn"], ["Processes", "Laser cutting, CNC, 3D printing"]],
     body: [
-      "A short, fast project: turning furniture concepts for special-needs children into physical scale models that could be evaluated, shown to the public, and used for fundraising."
+      "Designed and built scale furniture prototypes for children with special needs, used for design evaluation, public outreach, and fundraising."
     ],
     bullets: [
       "Engineered and fabricated 1/8-scale plywood and 1/32-scale 3D-printed furniture prototypes in under one week using AutoCAD, LightBurn laser cutting, CNC milling, and 3D printing.",
@@ -586,12 +630,12 @@ const ENTRIES = [
     title: "Aramis",
     org: "SEDS UNLV · IREC 2025", role: "Recovery Subsystem Engineer",
     start: "Dec 2024", end: "Jun 2025",
-    summary: "Redesigned the recovery avionics sled for a rocket that flew flawlessly at IREC 2025.",
+    summary: "Recovery avionics sled redesign for a rocket that earned a 100% recovery score at IREC 2025.",
     stats: [{ v: "100%", l: "Recovery score — 10,000 ft COTS division, IREC 2025" }, { v: "±5%", l: "Ejection-charge prediction vs. ground test" }],
     specs: [["Division", "10,000 ft COTS"], ["CAD", "SolidWorks"], ["Simulation", "OpenRocket"], ["Avionics", "Eggtimer Quasar + TeleMetrum"], ["Requirements", "IREC 2025 DTEG"]],
     body: [
-      "Aramis used a redundant dual-deploy architecture pairing an SRAD Eggtimer Quasar with a COTS Altus Metrum TeleMetrum, giving independent apogee and main deployment circuits plus live GPS and telemetry.",
-      "A pre-competition test flight deployed both parachutes nominally and validated timing and integration. At IREC 2025 the vehicle flew flawlessly and earned a 100% recovery score."
+      "Aramis used a redundant dual-deploy architecture pairing an SRAD Eggtimer Quasar with a COTS Altus Metrum TeleMetrum, with independent apogee and main deployment circuits and live GPS telemetry.",
+      "A pre-competition test flight deployed both parachutes nominally. At IREC 2025 the vehicle flew without anomalies and received a 100% recovery score."
     ],
     bullets: [
       "Redesigned the recovery avionics sled in SolidWorks and fabricated it by 3D printing; integrated dual altimeters and a camera.",
@@ -600,8 +644,10 @@ const ENTRIES = [
       "Analyzed test-flight telemetry to evaluate parachute deployment, ejection timing, and overall flight performance."
     ],
     images: [
+      { src: P("recEngRecovery"), cap: "Recovery at IREC 2025" },
+      { src: P("recEngAvBay1"), cap: "Avionics bay", tall: true },
+      { src: P("recEngAvBay2"), cap: "Avionics bay, wired", tall: true },
       { src: IMG + "AG8ngQUoxAz0XpqevyKDNJ2AGNZgm-RvkFYXvgRrCnBFqV9Iup4oT-q1X1gsfsZLXREjbAwrQZ6xeRriNOnC8LTGlvHwCTVXB9mjwF1bWtq7uVPro8XJ2VFmmR4gxSKrf0Ezj7dYuD8Xu7mIsFBgp5J-8C9IIWHoTpJof1Xolae7xwW5ZNWThKr0eFrlx6avpXE=w1280", cap: "Pre-competition test flight" },
-      { src: IMG + "AG8ngQVhZtYSooT6Mp_0lxpCbRwxAyh0CBGICV7F7baxtUOhOpI70IDXLuPjEmp-meB6eLnBQHY_y5L0C3D31ttLLKBdiJGyrP2VwooM2IP2l5emjVt25saG8ux-eLVBFs78S68Bs1uL_RhlBAqfDT3cu3Iz754ra_6XaXDfasPN4QZJIb0xVYtYpuJIfAUKiIg=w1280", cap: "Recovery avionics sled" },
       { src: IMG + "AG8ngQXUsrE_o1ZIMnQOONSZm_b-IE9K-5-ouPdlxnW3LhJAillYHgjSmn_9d3VJrH-HnTfC8TSdnuMZoC668p7VjRL0v1bV91Jh36EUaBd13bJXRFdxLYnubwOfb1QpNMBDaj8_qgjNQkTXGgex3fEpfdf1Uq66xg1gXfqOFG573YJ3Zr_h8GkbZstkph8S3L2qIyIBp36oSTg9nGLD24O_gcgLRCZIAzW8INBDqA=w1280", cap: "Dual-deploy wiring diagram", light: true }
     ]
   },
@@ -610,22 +656,23 @@ const ENTRIES = [
     title: "Vulcan",
     org: "Tripoli Rocketry Association", role: "Level 1 certification rocket",
     start: "Oct 2024", end: "Mar 2025",
-    summary: "Designed, built, and flew a 50-inch high-power rocket to earn Tripoli Level 1 certification.",
+    summary: "50-inch high-power rocket designed, built, and flown for Tripoli Level 1 certification.",
     stats: [{ v: "2,500 ft", l: "Approximate apogee" }, { v: "1.97 cal", l: "Stability margin" }],
     specs: [["Length", "50 in"], ["Apogee", "~2,500 ft"], ["Stability", "1.97 cal"], ["Launched", "March 15, 2025"], ["Tools", "OpenRocket, AutoCAD, laser cutter"]],
     body: [
-      "Vulcan took rocketry fundamentals all the way to a flight-ready vehicle. It was modeled and simulated in OpenRocket to check stability margin, motor selection, mass distribution, apogee, and deployment timing before anything was fabricated.",
-      "It launched on March 15, 2025 at a Tripoli-certified event, flew nominally, recovered with negligible damage, and passed inspection for Level 1 certification."
+      "Level 1 high-power rocket designed and built for Tripoli Rocketry Association certification. Stability margin, motor selection, mass distribution, apogee, and deployment timing were evaluated in OpenRocket before fabrication.",
+      "Launched March 15, 2025 at a Tripoli-certified event. The flight was nominal, the rocket was recovered with negligible damage, and it passed inspection for Level 1 certification."
     ],
     bullets: [
-      "Designed a 50-inch, 1.97-caliber-stable rocket in OpenRocket and calculated aerodynamic parameters for the target flight.",
+      "Designed a 50-inch rocket with a 1.97-caliber stability margin in OpenRocket and calculated aerodynamic parameters for the target flight.",
       "Drafted fins in AutoCAD, laser-cut them from plywood, and epoxied them to the airframe.",
       "Collected and reviewed flight data to verify design integrity."
     ],
-    links: [{ label: "Watch the launch ↗", href: "https://www.youtube.com/watch?v=4QGgb7rxjw4" }],
+    links: [{ label: "Launch video ↗", href: "https://www.youtube.com/watch?v=4QGgb7rxjw4" }],
     images: [
-      { src: IMG + "AG8ngQVFX47uqdHSyXcQKUp_I4ZtE71ofxjpSR6m3vLX2j10dpN0w_ZBv1rr7_-iLpFyi5wBMKBCK3Q6QsUGBLpterLgdo1RzBW_Qp9Mdl-U91qlUVAeC0P4WNF8hRC2aRF4ZJn6pw4cTACHxrxpme-iE9LVyiou_08TTNT3ngQe1fRHGONxCg8b41Bjlimd-OQ=w1280", cap: "Vulcan on the launch rail" },
-      { src: IMG + "AG8ngQXMHDXyhNJfXwaXftbFETrRhr2_NI-gRkKAt8lg7NW019FM64WZLgbKhK3PesBK6ttgAvwoR3zm55UhlvQwX1lifCnZlG52tf19LV0a6-bxXX8doDxcsYKWGhYLqGGz5IeNWZ3rjwmlzOX_KPET3ryW2jPz-4SmL-jE5lpKvOq32TVKPKeClpjQIoqJzlUZkN0mIarcidwBTsGG3p4MzP9zrGt-OQGzHxtox5eN5HQ=w1280", cap: "OpenRocket model", light: true }
+      { src: P("l1Posed"), cap: "Vulcan before launch", tall: true },
+      { src: P("l1"), cap: "Vulcan, assembled", tall: true },
+      { src: P("l1Cad"), cap: "Vulcan — CAD", light: true }
     ]
   },
   {
@@ -633,15 +680,15 @@ const ENTRIES = [
     title: "Marnell Companies",
     org: "Marnell Companies", role: "Architectural Intern",
     start: "Apr 2024", end: "Jul 2024",
-    summary: "Built the baseline Revit model for a 1.6 million sq ft resort renovation.",
+    summary: "Baseline Revit model for a 1.6 million sq ft resort renovation.",
     stats: [{ v: "1.6M", l: "Square feet in the renovation the model baselined" }],
     specs: [["Project", "Harvey's Lake Tahoe"], ["Tools", "Revit, AutoCAD"], ["Inputs", "LiDAR scans, plans, drawings"]],
     body: [
-      "My first internship: reconciling decades of drawings, scans, and undocumented changes into a single accurate model that a full renovation and rebrand could be planned from."
+      "Exterior modeling for the renovation and rebrand of Harvey's Lake Tahoe Hotel and Casino, reconciling existing drawings, LiDAR scans, and undocumented changes into a single baseline model."
     ],
     bullets: [
       "Developed full-scale exterior 2D and 3D Revit models of Harvey's Lake Tahoe Hotel and Casino from LiDAR scans, AutoCAD drawings, and architectural plans.",
-      "Identified and corrected design discrepancies, including undocumented remodels and misaligned structural elements, keeping the 1.6 million sq ft model aligned and consistent."
+      "Identified and corrected design discrepancies, including undocumented remodels and misaligned structural elements, across the 1.6 million sq ft model."
     ],
     images: []
   },
@@ -650,11 +697,11 @@ const ENTRIES = [
     title: "University of Nevada, Las Vegas",
     org: "UNLV", role: "B.S. Mechanical Engineering",
     start: "Aug 2023", end: "May 2027",
-    summary: "Mechanical engineering, with most hours outside class spent building rockets with SEDS UNLV.",
+    summary: "B.S. Mechanical Engineering, expected May 2027.",
     stats: [{ v: "3.74", l: "Cumulative GPA" }],
     specs: [["Degree", "B.S. Mechanical Engineering"], ["Expected", "May 2027"], ["GPA", "3.74"], ["Certification", "Tripoli Level 1"]],
     body: [
-      "Fourth-year mechanical engineering student. Beyond coursework, UNLV is where I joined SEDS, moved from recovery engineer to subsystem lead, earned my Tripoli Level 1, and started the rocket-deployed UAV senior design project."
+      "B.S. in Mechanical Engineering, expected May 2027. Member of SEDS UNLV since 2024 as IREC recovery subsystem engineer, recovery subsystem lead, and Secretary. Tripoli Rocketry Association Level 1 certified."
     ],
     bullets: [],
     images: []
@@ -674,12 +721,13 @@ const CATS = { work: "Work", project: "Project", leadership: "Leadership", educa
    RENDER — timeline
    ========================================================================== */
 const $ = (s, r = document) => r.querySelector(s);
+const frameClass = i => "frame" + (i.light ? " light" : "") + (i.tall ? " tall" : "");
 const dates = e => e.end ? `${e.start}<br><span class="dim">— ${e.end}</span>` : e.start;
 
 function mediaHTML(e, big = false) {
   const img = e.images && e.images[0];
   if (img) {
-    return `<div class="frame${img.light ? " light" : ""}"><img src="${img.src}" alt="${img.cap}" loading="lazy" referrerpolicy="no-referrer"></div>`;
+    return `<div class="${frameClass(img)}"><img src="${img.src}" alt="${img.cap}" loading="lazy" referrerpolicy="no-referrer"></div>`;
   }
   const s = e.stats && e.stats[0];
   return `<div class="plate">
@@ -765,7 +813,7 @@ function renderDetail(e) {
 
     ${gallery.length ? `<div class="wrap gallery">${gallery.map((g, n) => `
       <figure>
-        <div class="frame${g.light ? " light" : ""}"><img src="${g.src}" alt="${g.cap}" loading="lazy" referrerpolicy="no-referrer"></div>
+        <div class="${frameClass(g)}"><img src="${g.src}" alt="${g.cap}" loading="lazy" referrerpolicy="no-referrer"></div>
         <figcaption><span class="mono">Fig. ${String(n + (hero ? 2 : 1)).padStart(2, "0")}</span>${g.cap}</figcaption>
       </figure>`).join("")}</div>` : ""}
 
@@ -844,6 +892,7 @@ const tick = () => { $("#clock").textContent = `LAS — ${fmt.format(new Date())
 tick(); setInterval(tick, 1000);
 
 /* ========================================================================== */
+$("#resumeThumb").src = P("resume");
 renderTimeline();
 route();
 </script>
